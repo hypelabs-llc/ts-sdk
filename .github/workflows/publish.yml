@@ -1,0 +1,36 @@
+name: Publish
+
+# Publishes the SDK to npm on a version tag (e.g. v1.2.3), authenticating with npm Trusted Publishing
+# (OIDC) — no NPM_TOKEN is stored. npm also generates provenance automatically.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  id-token: write # lets GitHub issue the OIDC token npm exchanges
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      # Trusted publishing needs npm >= 11.5.1, newer than the one bundled with Node 22.
+      - run: npm install -g npm@latest
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      # No token: the npm CLI exchanges the OIDC token and publishes with provenance automatically.
+      - run: npm publish

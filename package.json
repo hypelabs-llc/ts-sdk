@@ -1,5 +1,5 @@
 {
-	"name": "@hypelabs-llc/partner-sdk",
+	"name": "@hypelabs-llc/ts-sdk",
 	"version": "0.1.0",
 	"description": "The TypeScript client for the HypeLabs Partner API, for internal services.",
 	"license": "MIT",

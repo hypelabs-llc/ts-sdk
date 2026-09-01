@@ -8,8 +8,8 @@
   The TypeScript client for the HypeLabs Partner API, for internal services. 🚀
 </p>
 <p align="center">
-  <a href="https://www.npmjs.com/package/@hypelabs-llc/partner-sdk"><img src="https://img.shields.io/npm/v/@hypelabs-llc/partner-sdk?color=cb3837&label=npm" /></a>
-  <a href="https://www.npmjs.com/package/@hypelabs-llc/partner-sdk"><img src="https://img.shields.io/npm/dt/@hypelabs-llc/partner-sdk?color=cb3837&label=Downloads" /></a>
+  <a href="https://www.npmjs.com/package/@hypelabs-llc/ts-sdk"><img src="https://img.shields.io/npm/v/@hypelabs-llc/ts-sdk?color=cb3837&label=npm" /></a>
+  <a href="https://www.npmjs.com/package/@hypelabs-llc/ts-sdk"><img src="https://img.shields.io/npm/dt/@hypelabs-llc/ts-sdk?color=cb3837&label=Downloads" /></a>
   <a href="https://connect.hypelabs.network"><img src="https://img.shields.io/badge/API-connect.hypelabs.network-6366f1" /></a>
   <a href="https://learn.microsoft.com/openapi/kiota/"><img src="https://img.shields.io/badge/Generated%20With-Kiota-0078d4" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" /></a>
@@ -26,7 +26,7 @@
 ## Install
 
 ```bash
-npm install @hypelabs-llc/partner-sdk
+npm install @hypelabs-llc/ts-sdk
 ```
 
 ## Usage
@@ -34,7 +34,7 @@ npm install @hypelabs-llc/partner-sdk
 Create a client with your API key and call the API. Every call is async and returns typed models.
 
 ```ts
-import { createPartnerClient } from "@hypelabs-llc/partner-sdk";
+import { createPartnerClient } from "@hypelabs-llc/ts-sdk";
 
 const client = createPartnerClient(process.env.PARTNER_API_KEY!);
 
@@ -51,7 +51,7 @@ Keep one shared client in a server-only module so the key never reaches the brow
 ```ts
 // lib/partner.ts
 import "server-only";
-import { createPartnerClient } from "@hypelabs-llc/partner-sdk";
+import { createPartnerClient } from "@hypelabs-llc/ts-sdk";
 
 export const partner = createPartnerClient(process.env.PARTNER_API_KEY!);
 ```
