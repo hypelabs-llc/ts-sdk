@@ -26,7 +26,7 @@
 ## Install
 
 ```bash
-npm install @hypelabs-llc/ts-sdk
+pnpm add @hypelabs-llc/ts-sdk
 ```
 
 ## Usage
