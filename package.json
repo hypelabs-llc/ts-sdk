@@ -1,0 +1,37 @@
+{
+	"name": "@hypelabs/partner-sdk",
+	"version": "0.1.0",
+	"description": "The TypeScript client for the HypeLabs Partner API, for internal services.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/hypelabs-llc/ts-sdk.git"
+	},
+	"homepage": "https://github.com/hypelabs-llc/ts-sdk",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc || true"
+	},
+	"dependencies": {
+		"@microsoft/kiota-authentication-azure": "1.0.0-preview.106",
+		"@microsoft/kiota-bundle": "1.0.0-preview.106"
+	},
+	"devDependencies": {
+		"typescript": "^5.6.0"
+	},
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
+	}
+}
