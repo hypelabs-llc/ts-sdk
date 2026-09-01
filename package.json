@@ -21,7 +21,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "tsc || true"
+		"build": "tsc"
 	},
 	"dependencies": {
 		"@microsoft/kiota-authentication-azure": "1.0.0-preview.106",
