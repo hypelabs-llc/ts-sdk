@@ -56,6 +56,20 @@ export interface Activity extends AdditionalDataHolder, Parsable {
 }
 export interface Activity_metadata extends AdditionalDataHolder, Parsable {
 }
+export interface AuthenticateCustomerRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The email property
+     */
+    email?: string | null;
+    /**
+     * The otp property
+     */
+    otp?: string | null;
+    /**
+     * The password property
+     */
+    password?: string | null;
+}
 export interface BalanceResponse extends AdditionalDataHolder, Parsable {
     /**
      * The currencies property
@@ -102,6 +116,15 @@ export function createActivity_metadataFromDiscriminatorValue(parseNode: ParseNo
 // @ts-ignore
 export function createActivityFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoActivity;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AuthenticateCustomerRequest}
+ */
+// @ts-ignore
+export function createAuthenticateCustomerRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAuthenticateCustomerRequest;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -909,6 +932,19 @@ export function deserializeIntoActivity(activity: Partial<Activity> | undefined 
 // @ts-ignore
 export function deserializeIntoActivity_metadata(activity_metadata: Partial<Activity_metadata> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param AuthenticateCustomerRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAuthenticateCustomerRequest(authenticateCustomerRequest: Partial<AuthenticateCustomerRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "email": n => { authenticateCustomerRequest.email = n.getStringValue(); },
+        "otp": n => { authenticateCustomerRequest.otp = n.getStringValue(); },
+        "password": n => { authenticateCustomerRequest.password = n.getStringValue(); },
     }
 }
 /**
@@ -2500,6 +2536,20 @@ export function serializeActivity(writer: SerializationWriter, activity: Partial
 export function serializeActivity_metadata(writer: SerializationWriter, activity_metadata: Partial<Activity_metadata> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!activity_metadata || isSerializingDerivedType) { return; }
     writer.writeAdditionalData(activity_metadata.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param AuthenticateCustomerRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAuthenticateCustomerRequest(writer: SerializationWriter, authenticateCustomerRequest: Partial<AuthenticateCustomerRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!authenticateCustomerRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("email", authenticateCustomerRequest.email);
+    writer.writeStringValue("otp", authenticateCustomerRequest.otp);
+    writer.writeStringValue("password", authenticateCustomerRequest.password);
+    writer.writeAdditionalData(authenticateCustomerRequest.additionalData);
 }
 /**
  * Serializes information the current object

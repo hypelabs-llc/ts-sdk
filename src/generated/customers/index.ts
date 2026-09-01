@@ -4,6 +4,8 @@
 // @ts-ignore
 import { createCustomerFromDiscriminatorValue, serializeCreateCustomerRequest, serializeCustomer, type CreateCustomerRequest, type Customer } from '../models/index.js';
 // @ts-ignore
+import { AuthenticateRequestBuilderRequestsMetadata, type AuthenticateRequestBuilder } from './authenticate/index.js';
+// @ts-ignore
 import { type WithCustomerItemRequestBuilder, WithCustomerItemRequestBuilderNavigationMetadata, WithCustomerItemRequestBuilderRequestsMetadata } from './item/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type Guid, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
@@ -12,6 +14,10 @@ import { type BaseRequestBuilder, type Guid, type KeysToExcludeForNavigationMeta
  * Builds and executes requests for operations under /customers
  */
 export interface CustomersRequestBuilder extends BaseRequestBuilder<CustomersRequestBuilder> {
+    /**
+     * The authenticate property
+     */
+    get authenticate(): AuthenticateRequestBuilder;
     /**
      * Gets an item from the ApiSdk.customers.item collection
      * @param customerId Unique identifier of the item
@@ -57,6 +63,9 @@ export const CustomersRequestBuilderNavigationMetadata: Record<Exclude<keyof Cus
         requestsMetadata: WithCustomerItemRequestBuilderRequestsMetadata,
         navigationMetadata: WithCustomerItemRequestBuilderNavigationMetadata,
         pathParametersMappings: ["customerId"],
+    },
+    authenticate: {
+        requestsMetadata: AuthenticateRequestBuilderRequestsMetadata,
     },
 };
 /**
