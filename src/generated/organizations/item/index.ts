@@ -10,9 +10,13 @@ import { BillingRequestBuilderRequestsMetadata, type BillingRequestBuilder } fro
 // @ts-ignore
 import { BrandingRequestBuilderRequestsMetadata, type BrandingRequestBuilder } from './branding/index.js';
 // @ts-ignore
-import { InfrastructureRequestBuilderRequestsMetadata, type InfrastructureRequestBuilder } from './infrastructure/index.js';
+import { EmailRequestBuilderRequestsMetadata, type EmailRequestBuilder } from './email/index.js';
+// @ts-ignore
+import { InfrastructureRequestBuilderNavigationMetadata, InfrastructureRequestBuilderRequestsMetadata, type InfrastructureRequestBuilder } from './infrastructure/index.js';
 // @ts-ignore
 import { MembersRequestBuilderNavigationMetadata, MembersRequestBuilderRequestsMetadata, type MembersRequestBuilder } from './members/index.js';
+// @ts-ignore
+import { PricingRequestBuilderRequestsMetadata, type PricingRequestBuilder } from './pricing/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
 
@@ -33,6 +37,10 @@ export interface WithOrganizationItemRequestBuilder extends BaseRequestBuilder<W
      */
     get branding(): BrandingRequestBuilder;
     /**
+     * The email property
+     */
+    get email(): EmailRequestBuilder;
+    /**
      * The infrastructure property
      */
     get infrastructure(): InfrastructureRequestBuilder;
@@ -40,6 +48,10 @@ export interface WithOrganizationItemRequestBuilder extends BaseRequestBuilder<W
      * The members property
      */
     get members(): MembersRequestBuilder;
+    /**
+     * The pricing property
+     */
+    get pricing(): PricingRequestBuilder;
     /**
      * Permanently deletes an organization. Only its owner can do this.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
@@ -97,12 +109,19 @@ export const WithOrganizationItemRequestBuilderNavigationMetadata: Record<Exclud
     branding: {
         requestsMetadata: BrandingRequestBuilderRequestsMetadata,
     },
+    email: {
+        requestsMetadata: EmailRequestBuilderRequestsMetadata,
+    },
     infrastructure: {
         requestsMetadata: InfrastructureRequestBuilderRequestsMetadata,
+        navigationMetadata: InfrastructureRequestBuilderNavigationMetadata,
     },
     members: {
         requestsMetadata: MembersRequestBuilderRequestsMetadata,
         navigationMetadata: MembersRequestBuilderNavigationMetadata,
+    },
+    pricing: {
+        requestsMetadata: PricingRequestBuilderRequestsMetadata,
     },
 };
 /**

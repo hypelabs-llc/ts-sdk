@@ -4,12 +4,18 @@
 // @ts-ignore
 import { createOrganizationFromDiscriminatorValue, createOrganizationInfrastructure2FromDiscriminatorValue, serializeOrganization, serializeUpdateOrganizationInfrastructureRequest, type Organization, type OrganizationInfrastructure2, type UpdateOrganizationInfrastructureRequest } from '../../../models/index.js';
 // @ts-ignore
-import { type BaseRequestBuilder, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
+import { DnsCheckRequestBuilderRequestsMetadata, type DnsCheckRequestBuilder } from './dnsCheck/index.js';
+// @ts-ignore
+import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
 
 /**
  * Builds and executes requests for operations under /organizations/{organizationId}/infrastructure
  */
 export interface InfrastructureRequestBuilder extends BaseRequestBuilder<InfrastructureRequestBuilder> {
+    /**
+     * The dnsCheck property
+     */
+    get dnsCheck(): DnsCheckRequestBuilder;
     /**
      * Returns the organization's proxy plumbing, or null if none is set.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
@@ -41,6 +47,14 @@ export interface InfrastructureRequestBuilder extends BaseRequestBuilder<Infrast
  * Uri template for the request builder.
  */
 export const InfrastructureRequestBuilderUriTemplate = "{+baseurl}/organizations/{organizationId}/infrastructure";
+/**
+ * Metadata for all the navigation properties in the request builder.
+ */
+export const InfrastructureRequestBuilderNavigationMetadata: Record<Exclude<keyof InfrastructureRequestBuilder, KeysToExcludeForNavigationMetadata>, NavigationMetadata> = {
+    dnsCheck: {
+        requestsMetadata: DnsCheckRequestBuilderRequestsMetadata,
+    },
+};
 /**
  * Metadata for all the requests in the request builder.
  */

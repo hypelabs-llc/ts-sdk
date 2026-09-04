@@ -22,6 +22,8 @@ import { ProductsRequestBuilderRequestsMetadata, type ProductsRequestBuilder } f
 // @ts-ignore
 import { ProxiesRequestBuilderNavigationMetadata, ProxiesRequestBuilderRequestsMetadata, type ProxiesRequestBuilder } from './proxies/index.js';
 // @ts-ignore
+import { SystemAlertRequestBuilderRequestsMetadata, type SystemAlertRequestBuilder } from './systemAlert/index.js';
+// @ts-ignore
 import { apiClientProxifier, ParseNodeFactoryRegistry, SerializationWriterFactoryRegistry, type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type RequestAdapter } from '@microsoft/kiota-abstractions';
 // @ts-ignore
 import { FormParseNodeFactory, FormSerializationWriterFactory } from '@microsoft/kiota-serialization-form';
@@ -110,6 +112,10 @@ export interface PartnerApiClient extends BaseRequestBuilder<PartnerApiClient> {
      * The proxies property
      */
     get proxies(): ProxiesRequestBuilder;
+    /**
+     * The systemAlert property
+     */
+    get systemAlert(): SystemAlertRequestBuilder;
 }
 /**
  * Uri template for the request builder.
@@ -153,6 +159,9 @@ export const PartnerApiClientNavigationMetadata: Record<Exclude<keyof PartnerApi
     proxies: {
         requestsMetadata: ProxiesRequestBuilderRequestsMetadata,
         navigationMetadata: ProxiesRequestBuilderNavigationMetadata,
+    },
+    systemAlert: {
+        requestsMetadata: SystemAlertRequestBuilderRequestsMetadata,
     },
 };
 /* tslint:enable */
