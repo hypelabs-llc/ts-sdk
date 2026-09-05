@@ -4,6 +4,8 @@
 // @ts-ignore
 import { ActivitiesRequestBuilderRequestsMetadata, type ActivitiesRequestBuilder } from './activities/index.js';
 // @ts-ignore
+import { AnnouncementsRequestBuilderRequestsMetadata, type AnnouncementsRequestBuilder } from './announcements/index.js';
+// @ts-ignore
 import { CustomersRequestBuilderNavigationMetadata, CustomersRequestBuilderRequestsMetadata, type CustomersRequestBuilder } from './customers/index.js';
 // @ts-ignore
 import { IncidentsRequestBuilderNavigationMetadata, IncidentsRequestBuilderRequestsMetadata, type IncidentsRequestBuilder } from './incidents/index.js';
@@ -21,6 +23,8 @@ import { PaymentProcessorsRequestBuilderRequestsMetadata, type PaymentProcessors
 import { ProductsRequestBuilderRequestsMetadata, type ProductsRequestBuilder } from './products/index.js';
 // @ts-ignore
 import { ProxiesRequestBuilderNavigationMetadata, ProxiesRequestBuilderRequestsMetadata, type ProxiesRequestBuilder } from './proxies/index.js';
+// @ts-ignore
+import { ReviewsRequestBuilderNavigationMetadata, ReviewsRequestBuilderRequestsMetadata, type ReviewsRequestBuilder } from './reviews/index.js';
 // @ts-ignore
 import { SystemAlertRequestBuilderRequestsMetadata, type SystemAlertRequestBuilder } from './systemAlert/index.js';
 // @ts-ignore
@@ -77,6 +81,10 @@ export interface PartnerApiClient extends BaseRequestBuilder<PartnerApiClient> {
      */
     get activities(): ActivitiesRequestBuilder;
     /**
+     * The announcements property
+     */
+    get announcements(): AnnouncementsRequestBuilder;
+    /**
      * The customers property
      */
     get customers(): CustomersRequestBuilder;
@@ -113,6 +121,10 @@ export interface PartnerApiClient extends BaseRequestBuilder<PartnerApiClient> {
      */
     get proxies(): ProxiesRequestBuilder;
     /**
+     * The reviews property
+     */
+    get reviews(): ReviewsRequestBuilder;
+    /**
      * The systemAlert property
      */
     get systemAlert(): SystemAlertRequestBuilder;
@@ -127,6 +139,9 @@ export const PartnerApiClientUriTemplate = "{+baseurl}";
 export const PartnerApiClientNavigationMetadata: Record<Exclude<keyof PartnerApiClient, KeysToExcludeForNavigationMetadata>, NavigationMetadata> = {
     activities: {
         requestsMetadata: ActivitiesRequestBuilderRequestsMetadata,
+    },
+    announcements: {
+        requestsMetadata: AnnouncementsRequestBuilderRequestsMetadata,
     },
     customers: {
         requestsMetadata: CustomersRequestBuilderRequestsMetadata,
@@ -159,6 +174,10 @@ export const PartnerApiClientNavigationMetadata: Record<Exclude<keyof PartnerApi
     proxies: {
         requestsMetadata: ProxiesRequestBuilderRequestsMetadata,
         navigationMetadata: ProxiesRequestBuilderNavigationMetadata,
+    },
+    reviews: {
+        requestsMetadata: ReviewsRequestBuilderRequestsMetadata,
+        navigationMetadata: ReviewsRequestBuilderNavigationMetadata,
     },
     systemAlert: {
         requestsMetadata: SystemAlertRequestBuilderRequestsMetadata,

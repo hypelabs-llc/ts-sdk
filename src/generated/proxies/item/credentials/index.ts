@@ -22,7 +22,7 @@ export interface CredentialsRequestBuilder extends BaseRequestBuilder<Credential
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<Proxy>}
      */
-     post(body: ChangeProxyCredentialsRequest, requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<Proxy | undefined>;
+     put(body: ChangeProxyCredentialsRequest, requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<Proxy | undefined>;
     /**
      * Returns the credentials currently in effect on an allocated proxy, fetched live from the Manager.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
@@ -35,7 +35,7 @@ export interface CredentialsRequestBuilder extends BaseRequestBuilder<Credential
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {RequestInformation}
      */
-     toPostRequestInformation(body: ChangeProxyCredentialsRequest, requestConfiguration?: RequestConfiguration<object> | undefined) : RequestInformation;
+     toPutRequestInformation(body: ChangeProxyCredentialsRequest, requestConfiguration?: RequestConfiguration<object> | undefined) : RequestInformation;
 }
 /**
  * Uri template for the request builder.
@@ -51,7 +51,7 @@ export const CredentialsRequestBuilderRequestsMetadata: RequestsMetadata = {
         adapterMethodName: "send",
         responseBodyFactory:  createProxyCredentialResponseFromDiscriminatorValue,
     },
-    post: {
+    put: {
         uriTemplate: CredentialsRequestBuilderUriTemplate,
         responseBodyContentType: "application/json, text/plain;q=0.9",
         adapterMethodName: "send",

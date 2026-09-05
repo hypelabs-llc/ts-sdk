@@ -2,3 +2,4 @@ node_modules/
 dist/
 regen.sh
 openapi.json
+src/generated/.kiota.log

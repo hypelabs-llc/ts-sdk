@@ -34,6 +34,41 @@ export interface Activity extends AdditionalDataHolder, Parsable {
      */
     statusCode?: number | null;
 }
+export interface Announcement extends AdditionalDataHolder, Parsable {
+    /**
+     * The body property
+     */
+    body?: string | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The imageUrl property
+     */
+    imageUrl?: string | null;
+    /**
+     * The isLive property
+     */
+    isLive?: boolean | null;
+    /**
+     * The linkLabel property
+     */
+    linkLabel?: string | null;
+    /**
+     * The linkUrl property
+     */
+    linkUrl?: string | null;
+    /**
+     * The status property
+     */
+    status?: AnnouncementStatuses | null;
+    /**
+     * The title property
+     */
+    title?: string | null;
+}
+export type AnnouncementStatuses = (typeof AnnouncementStatusesObject)[keyof typeof AnnouncementStatusesObject];
 export interface AuthenticateCustomerRequest extends AdditionalDataHolder, Parsable {
     /**
      * The email property
@@ -85,6 +120,15 @@ export interface ChangeProxyCredentialsRequest extends AdditionalDataHolder, Par
 // @ts-ignore
 export function createActivityFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoActivity;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {Announcement}
+ */
+// @ts-ignore
+export function createAnnouncementFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAnnouncement;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -175,6 +219,15 @@ export function createCreateOrderResponseFromDiscriminatorValue(parseNode: Parse
 // @ts-ignore
 export function createCreateOrganizationRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoCreateOrganizationRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CreateReviewRequest}
+ */
+// @ts-ignore
+export function createCreateReviewRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCreateReviewRequest;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -611,11 +664,42 @@ export function createProxyPingResponseFromDiscriminatorValue(parseNode: ParseNo
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {Review}
+ */
+// @ts-ignore
+export function createReviewFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoReview;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {ReviewKycRequest}
  */
 // @ts-ignore
 export function createReviewKycRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoReviewKycRequest;
+}
+export interface CreateReviewRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The content property
+     */
+    content?: string | null;
+    /**
+     * The customAuthorName property
+     */
+    customAuthorName?: string | null;
+    /**
+     * The customerId property
+     */
+    customerId?: Guid | null;
+    /**
+     * The isFeatured property
+     */
+    isFeatured?: boolean | null;
+    /**
+     * The rating property
+     */
+    rating?: number | null;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -868,6 +952,24 @@ export function deserializeIntoActivity(activity: Partial<Activity> | undefined 
 }
 /**
  * The deserialization information for the current model
+ * @param Announcement The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAnnouncement(announcement: Partial<Announcement> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "body": n => { announcement.body = n.getStringValue(); },
+        "id": n => { announcement.id = n.getGuidValue(); },
+        "imageUrl": n => { announcement.imageUrl = n.getStringValue(); },
+        "isLive": n => { announcement.isLive = n.getBooleanValue(); },
+        "linkLabel": n => { announcement.linkLabel = n.getStringValue(); },
+        "linkUrl": n => { announcement.linkUrl = n.getStringValue(); },
+        "status": n => { announcement.status = n.getEnumValue<AnnouncementStatuses>(AnnouncementStatusesObject); },
+        "title": n => { announcement.title = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param AuthenticateCustomerRequest The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -1001,6 +1103,21 @@ export function deserializeIntoCreateOrganizationRequest(createOrganizationReque
     return {
         "companyName": n => { createOrganizationRequest.companyName = n.getStringValue(); },
         "name": n => { createOrganizationRequest.name = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param CreateReviewRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCreateReviewRequest(createReviewRequest: Partial<CreateReviewRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "content": n => { createReviewRequest.content = n.getStringValue(); },
+        "customAuthorName": n => { createReviewRequest.customAuthorName = n.getStringValue(); },
+        "customerId": n => { createReviewRequest.customerId = n.getGuidValue(); },
+        "isFeatured": n => { createReviewRequest.isFeatured = n.getBooleanValue(); },
+        "rating": n => { createReviewRequest.rating = n.getNumberValue(); },
     }
 }
 /**
@@ -1206,15 +1323,12 @@ export function deserializeIntoOrder(order: Partial<Order> | undefined = {}) : R
         "allocationId": n => { order.allocationId = n.getGuidValue(); },
         "billingCycle": n => { order.billingCycle = n.getEnumValue<BillingCycles>(BillingCyclesObject); },
         "completePaymentUrl": n => { order.completePaymentUrl = n.getStringValue(); },
-        "consumerRef": n => { order.consumerRef = n.getStringValue(); },
         "currency": n => { order.currency = n.getStringValue(); },
         "customerId": n => { order.customerId = n.getGuidValue(); },
         "expiresAt": n => { order.expiresAt = n.getDateValue(); },
         "id": n => { order.id = n.getGuidValue(); },
         "isInGracePeriod": n => { order.isInGracePeriod = n.getBooleanValue(); },
-        "ispId": n => { order.ispId = n.getGuidValue(); },
         "isTrial": n => { order.isTrial = n.getBooleanValue(); },
-        "locationId": n => { order.locationId = n.getGuidValue(); },
         "paymentMethod": n => { order.paymentMethod = n.getEnumValue<PaymentMethods>(PaymentMethodsObject); },
         "productId": n => { order.productId = n.getGuidValue(); },
         "quantity": n => { order.quantity = n.getNumberValue(); },
@@ -1403,6 +1517,7 @@ export function deserializeIntoPaymentProcessor(paymentProcessor: Partial<Paymen
         "fields": n => { paymentProcessor.fields = n.getCollectionOfObjectValues<ProcessorFieldSchema>(createProcessorFieldSchemaFromDiscriminatorValue); },
         "id": n => { paymentProcessor.id = n.getGuidValue(); },
         "organizationId": n => { paymentProcessor.organizationId = n.getGuidValue(); },
+        "paymentMethod": n => { paymentProcessor.paymentMethod = n.getEnumValue<PaymentMethods>(PaymentMethodsObject); },
         "processor": n => { paymentProcessor.processor = n.getEnumValue<PaymentProcessors>(PaymentProcessorsObject); },
         "values": n => { paymentProcessor.values = n.getObjectValue<PaymentProcessor_values>(createPaymentProcessor_valuesFromDiscriminatorValue); },
     }
@@ -1525,8 +1640,29 @@ export function deserializeIntoProxyIpRotationResponse(proxyIpRotationResponse: 
 // @ts-ignore
 export function deserializeIntoProxyPingResponse(proxyPingResponse: Partial<ProxyPingResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
+        "exitIp": n => { proxyPingResponse.exitIp = n.getStringValue(); },
         "latencyMs": n => { proxyPingResponse.latencyMs = n.getNumberValue(); },
         "reachable": n => { proxyPingResponse.reachable = n.getBooleanValue(); },
+        "statusCode": n => { proxyPingResponse.statusCode = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param Review The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoReview(review: Partial<Review> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "authorName": n => { review.authorName = n.getStringValue(); },
+        "content": n => { review.content = n.getStringValue(); },
+        "customAuthorName": n => { review.customAuthorName = n.getStringValue(); },
+        "customerId": n => { review.customerId = n.getGuidValue(); },
+        "id": n => { review.id = n.getGuidValue(); },
+        "isFeatured": n => { review.isFeatured = n.getBooleanValue(); },
+        "isPending": n => { review.isPending = n.getBooleanValue(); },
+        "organizationId": n => { review.organizationId = n.getGuidValue(); },
+        "rating": n => { review.rating = n.getNumberValue(); },
     }
 }
 /**
@@ -1860,10 +1996,6 @@ export interface Order extends AdditionalDataHolder, Parsable {
      */
     completePaymentUrl?: string | null;
     /**
-     * The consumerRef property
-     */
-    consumerRef?: string | null;
-    /**
      * The currency property
      */
     currency?: string | null;
@@ -1884,17 +2016,9 @@ export interface Order extends AdditionalDataHolder, Parsable {
      */
     isInGracePeriod?: boolean | null;
     /**
-     * The ispId property
-     */
-    ispId?: Guid | null;
-    /**
      * The isTrial property
      */
     isTrial?: boolean | null;
-    /**
-     * The locationId property
-     */
-    locationId?: Guid | null;
     /**
      * The paymentMethod property
      */
@@ -2195,6 +2319,10 @@ export interface PaymentProcessor extends AdditionalDataHolder, Parsable {
      */
     organizationId?: Guid | null;
     /**
+     * The paymentMethod property
+     */
+    paymentMethod?: PaymentMethods | null;
+    /**
      * The processor property
      */
     processor?: PaymentProcessors | null;
@@ -2381,6 +2509,10 @@ export interface ProxyIpRotationResponse extends AdditionalDataHolder, Parsable 
 }
 export interface ProxyPingResponse extends AdditionalDataHolder, Parsable {
     /**
+     * The exitIp property
+     */
+    exitIp?: string | null;
+    /**
      * The latencyMs property
      */
     latencyMs?: number | null;
@@ -2388,6 +2520,48 @@ export interface ProxyPingResponse extends AdditionalDataHolder, Parsable {
      * The reachable property
      */
     reachable?: boolean | null;
+    /**
+     * The statusCode property
+     */
+    statusCode?: number | null;
+}
+export interface Review extends AdditionalDataHolder, Parsable {
+    /**
+     * The authorName property
+     */
+    authorName?: string | null;
+    /**
+     * The content property
+     */
+    content?: string | null;
+    /**
+     * The customAuthorName property
+     */
+    customAuthorName?: string | null;
+    /**
+     * The customerId property
+     */
+    customerId?: Guid | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The isFeatured property
+     */
+    isFeatured?: boolean | null;
+    /**
+     * The isPending property
+     */
+    isPending?: boolean | null;
+    /**
+     * The organizationId property
+     */
+    organizationId?: Guid | null;
+    /**
+     * The rating property
+     */
+    rating?: number | null;
 }
 export interface ReviewKycRequest extends AdditionalDataHolder, Parsable {
     /**
@@ -2412,6 +2586,25 @@ export function serializeActivity(writer: SerializationWriter, activity: Partial
     writer.writeStringValue("requestBody", activity.requestBody);
     writer.writeNumberValue("statusCode", activity.statusCode);
     writer.writeAdditionalData(activity.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param Announcement The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAnnouncement(writer: SerializationWriter, announcement: Partial<Announcement> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!announcement || isSerializingDerivedType) { return; }
+    writer.writeStringValue("body", announcement.body);
+    writer.writeGuidValue("id", announcement.id);
+    writer.writeStringValue("imageUrl", announcement.imageUrl);
+    writer.writeBooleanValue("isLive", announcement.isLive);
+    writer.writeStringValue("linkLabel", announcement.linkLabel);
+    writer.writeStringValue("linkUrl", announcement.linkUrl);
+    writer.writeEnumValue<AnnouncementStatuses>("status", announcement.status);
+    writer.writeStringValue("title", announcement.title);
+    writer.writeAdditionalData(announcement.additionalData);
 }
 /**
  * Serializes information the current object
@@ -2559,6 +2752,22 @@ export function serializeCreateOrganizationRequest(writer: SerializationWriter, 
     writer.writeStringValue("companyName", createOrganizationRequest.companyName);
     writer.writeStringValue("name", createOrganizationRequest.name);
     writer.writeAdditionalData(createOrganizationRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param CreateReviewRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCreateReviewRequest(writer: SerializationWriter, createReviewRequest: Partial<CreateReviewRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!createReviewRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("content", createReviewRequest.content);
+    writer.writeStringValue("customAuthorName", createReviewRequest.customAuthorName);
+    writer.writeGuidValue("customerId", createReviewRequest.customerId);
+    writer.writeBooleanValue("isFeatured", createReviewRequest.isFeatured);
+    writer.writeNumberValue("rating", createReviewRequest.rating);
+    writer.writeAdditionalData(createReviewRequest.additionalData);
 }
 /**
  * Serializes information the current object
@@ -2777,15 +2986,12 @@ export function serializeOrder(writer: SerializationWriter, order: Partial<Order
     writer.writeGuidValue("allocationId", order.allocationId);
     writer.writeEnumValue<BillingCycles>("billingCycle", order.billingCycle);
     writer.writeStringValue("completePaymentUrl", order.completePaymentUrl);
-    writer.writeStringValue("consumerRef", order.consumerRef);
     writer.writeStringValue("currency", order.currency);
     writer.writeGuidValue("customerId", order.customerId);
     writer.writeDateValue("expiresAt", order.expiresAt);
     writer.writeGuidValue("id", order.id);
     writer.writeBooleanValue("isInGracePeriod", order.isInGracePeriod);
-    writer.writeGuidValue("ispId", order.ispId);
     writer.writeBooleanValue("isTrial", order.isTrial);
-    writer.writeGuidValue("locationId", order.locationId);
     writer.writeEnumValue<PaymentMethods>("paymentMethod", order.paymentMethod);
     writer.writeGuidValue("productId", order.productId);
     writer.writeNumberValue("quantity", order.quantity);
@@ -2986,6 +3192,7 @@ export function serializePaymentProcessor(writer: SerializationWriter, paymentPr
     writer.writeCollectionOfObjectValues<ProcessorFieldSchema>("fields", paymentProcessor.fields, serializeProcessorFieldSchema);
     writer.writeGuidValue("id", paymentProcessor.id);
     writer.writeGuidValue("organizationId", paymentProcessor.organizationId);
+    writer.writeEnumValue<PaymentMethods>("paymentMethod", paymentProcessor.paymentMethod);
     writer.writeEnumValue<PaymentProcessors>("processor", paymentProcessor.processor);
     writer.writeObjectValue<PaymentProcessor_values>("values", paymentProcessor.values, serializePaymentProcessor_values);
     writer.writeAdditionalData(paymentProcessor.additionalData);
@@ -3116,9 +3323,31 @@ export function serializeProxyIpRotationResponse(writer: SerializationWriter, pr
 // @ts-ignore
 export function serializeProxyPingResponse(writer: SerializationWriter, proxyPingResponse: Partial<ProxyPingResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!proxyPingResponse || isSerializingDerivedType) { return; }
+    writer.writeStringValue("exitIp", proxyPingResponse.exitIp);
     writer.writeNumberValue("latencyMs", proxyPingResponse.latencyMs);
     writer.writeBooleanValue("reachable", proxyPingResponse.reachable);
+    writer.writeNumberValue("statusCode", proxyPingResponse.statusCode);
     writer.writeAdditionalData(proxyPingResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param Review The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeReview(writer: SerializationWriter, review: Partial<Review> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!review || isSerializingDerivedType) { return; }
+    writer.writeStringValue("authorName", review.authorName);
+    writer.writeStringValue("content", review.content);
+    writer.writeStringValue("customAuthorName", review.customAuthorName);
+    writer.writeGuidValue("customerId", review.customerId);
+    writer.writeGuidValue("id", review.id);
+    writer.writeBooleanValue("isFeatured", review.isFeatured);
+    writer.writeBooleanValue("isPending", review.isPending);
+    writer.writeGuidValue("organizationId", review.organizationId);
+    writer.writeNumberValue("rating", review.rating);
+    writer.writeAdditionalData(review.additionalData);
 }
 /**
  * Serializes information the current object
@@ -3449,6 +3678,11 @@ export interface UpdateProxyIpRotationRequest extends AdditionalDataHolder, Pars
      */
     delaySeconds?: number | null;
 }
+export const AnnouncementStatusesObject = {
+    Draft: "Draft",
+    Published: "Published",
+    Archived: "Archived",
+} as const;
 export const BillingCyclesObject = {
     Daily: "Daily",
     Weekly: "Weekly",
@@ -3472,11 +3706,14 @@ export const NullableOfBillingCyclesObject = {
     Monthly: "Monthly",
     Quarterly: "Quarterly",
     Yearly: "Yearly",
+    OpenapiJsonNullSentinelValue2BF936000FE44250987AE5DDB203E464: "openapi-json-null-sentinel-value-2BF93600-0FE4-4250-987A-E5DDB203E464",
 } as const;
 export const NullableOfPaymentMethodsObject = {
     Balance: "Balance",
     CreditCard: "CreditCard",
     Cryptocurrency: "Cryptocurrency",
+    Debug: "Debug",
+    OpenapiJsonNullSentinelValue2BF936000FE44250987AE5DDB203E464: "openapi-json-null-sentinel-value-2BF93600-0FE4-4250-987A-E5DDB203E464",
 } as const;
 export const OrderStatusesObject = {
     Pending: "Pending",
@@ -3492,6 +3729,7 @@ export const PaymentMethodsObject = {
     Balance: "Balance",
     CreditCard: "CreditCard",
     Cryptocurrency: "Cryptocurrency",
+    Debug: "Debug",
 } as const;
 export const PaymentProcessorsObject = {
     Heleket: "Heleket",
