@@ -6,26 +6,26 @@ import { createProxyFromDiscriminatorValue, type Proxy } from '../models/index.j
 // @ts-ignore
 import { type WithProxyItemRequestBuilder, WithProxyItemRequestBuilderNavigationMetadata, WithProxyItemRequestBuilderRequestsMetadata } from './item/index.js';
 // @ts-ignore
-import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
+import { type BaseRequestBuilder, type Guid, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
 
 /**
  * Builds and executes requests for operations under /proxies
  */
 export interface ProxiesRequestBuilder extends BaseRequestBuilder<ProxiesRequestBuilder> {
     /**
-     * Gets an item from the ApiSdk.proxies.item collection
+     * Gets an item from the HypeLabs.Connect.Sdk.Generated.proxies.item collection
      * @param proxyId Unique identifier of the item
      * @returns {WithProxyItemRequestBuilder}
      */
-     byProxyId(proxyId: string) : WithProxyItemRequestBuilder;
+     byProxyId(proxyId: Guid) : WithProxyItemRequestBuilder;
     /**
-     * Returns a snapshot of all the partner's active proxies with their connection details.
+     * Returns a snapshot of all your active proxies with their connection details.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<Proxy[]>}
      */
      get(requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<Proxy[] | undefined>;
     /**
-     * Returns a snapshot of all the partner's active proxies with their connection details.
+     * Returns a snapshot of all your active proxies with their connection details.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {RequestInformation}
      */

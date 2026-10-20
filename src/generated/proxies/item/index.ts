@@ -4,9 +4,15 @@
 // @ts-ignore
 import { createProxyFromDiscriminatorValue, type Proxy } from '../../models/index.js';
 // @ts-ignore
+import { AnnotationsRequestBuilderRequestsMetadata, type AnnotationsRequestBuilder } from './annotations/index.js';
+// @ts-ignore
 import { CredentialsRequestBuilderRequestsMetadata, type CredentialsRequestBuilder } from './credentials/index.js';
 // @ts-ignore
+import { IpInfoRequestBuilderRequestsMetadata, type IpInfoRequestBuilder } from './ipInfo/index.js';
+// @ts-ignore
 import { IpRotationRequestBuilderNavigationMetadata, IpRotationRequestBuilderRequestsMetadata, type IpRotationRequestBuilder } from './ipRotation/index.js';
+// @ts-ignore
+import { OptionsRequestBuilderRequestsMetadata, type OptionsRequestBuilder } from './options/index.js';
 // @ts-ignore
 import { PingRequestBuilderRequestsMetadata, type PingRequestBuilder } from './ping/index.js';
 // @ts-ignore
@@ -17,25 +23,37 @@ import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type 
  */
 export interface WithProxyItemRequestBuilder extends BaseRequestBuilder<WithProxyItemRequestBuilder> {
     /**
+     * The annotations property
+     */
+    get annotations(): AnnotationsRequestBuilder;
+    /**
      * The credentials property
      */
     get credentials(): CredentialsRequestBuilder;
+    /**
+     * The ipInfo property
+     */
+    get ipInfo(): IpInfoRequestBuilder;
     /**
      * The ipRotation property
      */
     get ipRotation(): IpRotationRequestBuilder;
     /**
+     * The optionsPath property
+     */
+    get optionsPath(): OptionsRequestBuilder;
+    /**
      * The ping property
      */
     get ping(): PingRequestBuilder;
     /**
-     * Returns the connection details of a single allocated proxy.
+     * Returns one of your proxies with its connection details.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<Proxy>}
      */
      get(requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<Proxy | undefined>;
     /**
-     * Returns the connection details of a single allocated proxy.
+     * Returns one of your proxies with its connection details.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {RequestInformation}
      */
@@ -49,12 +67,21 @@ export const WithProxyItemRequestBuilderUriTemplate = "{+baseurl}/proxies/{proxy
  * Metadata for all the navigation properties in the request builder.
  */
 export const WithProxyItemRequestBuilderNavigationMetadata: Record<Exclude<keyof WithProxyItemRequestBuilder, KeysToExcludeForNavigationMetadata>, NavigationMetadata> = {
+    annotations: {
+        requestsMetadata: AnnotationsRequestBuilderRequestsMetadata,
+    },
     credentials: {
         requestsMetadata: CredentialsRequestBuilderRequestsMetadata,
+    },
+    ipInfo: {
+        requestsMetadata: IpInfoRequestBuilderRequestsMetadata,
     },
     ipRotation: {
         requestsMetadata: IpRotationRequestBuilderRequestsMetadata,
         navigationMetadata: IpRotationRequestBuilderNavigationMetadata,
+    },
+    optionsPath: {
+        requestsMetadata: OptionsRequestBuilderRequestsMetadata,
     },
     ping: {
         requestsMetadata: PingRequestBuilderRequestsMetadata,

@@ -4,6 +4,8 @@
 // @ts-ignore
 import { createProxyIpRotationResponseFromDiscriminatorValue, serializeUpdateProxyIpRotationRequest, type ProxyIpRotationResponse, type UpdateProxyIpRotationRequest } from '../../../models/index.js';
 // @ts-ignore
+import { LinkRequestBuilderRequestsMetadata, type LinkRequestBuilder } from './link/index.js';
+// @ts-ignore
 import { TriggerRequestBuilderRequestsMetadata, type TriggerRequestBuilder } from './trigger/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
@@ -13,31 +15,35 @@ import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type 
  */
 export interface IpRotationRequestBuilder extends BaseRequestBuilder<IpRotationRequestBuilder> {
     /**
+     * The link property
+     */
+    get link(): LinkRequestBuilder;
+    /**
      * The trigger property
      */
     get trigger(): TriggerRequestBuilder;
     /**
-     * Returns the IP rotation configured on an allocated proxy, fetched live from the Manager.
+     * Returns the IP rotation configured on an owned proxy.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<ProxyIpRotationResponse>}
      */
      get(requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<ProxyIpRotationResponse | undefined>;
     /**
-     * Configures how often the proxy rotates its IP. A delay of 0 disables rotation.
-     * @param body The request body
+     * Configures how often the proxy rotates its IP. An interval of 0 disables rotation.
+     * @param body Request to configure a proxy's IP rotation. An interval of 0 disables rotation.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<ArrayBuffer>}
      */
      put(body: UpdateProxyIpRotationRequest, requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<ArrayBuffer | undefined>;
     /**
-     * Returns the IP rotation configured on an allocated proxy, fetched live from the Manager.
+     * Returns the IP rotation configured on an owned proxy.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {RequestInformation}
      */
      toGetRequestInformation(requestConfiguration?: RequestConfiguration<object> | undefined) : RequestInformation;
     /**
-     * Configures how often the proxy rotates its IP. A delay of 0 disables rotation.
-     * @param body The request body
+     * Configures how often the proxy rotates its IP. An interval of 0 disables rotation.
+     * @param body Request to configure a proxy's IP rotation. An interval of 0 disables rotation.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {RequestInformation}
      */
@@ -51,6 +57,9 @@ export const IpRotationRequestBuilderUriTemplate = "{+baseurl}/proxies/{proxyId}
  * Metadata for all the navigation properties in the request builder.
  */
 export const IpRotationRequestBuilderNavigationMetadata: Record<Exclude<keyof IpRotationRequestBuilder, KeysToExcludeForNavigationMetadata>, NavigationMetadata> = {
+    link: {
+        requestsMetadata: LinkRequestBuilderRequestsMetadata,
+    },
     trigger: {
         requestsMetadata: TriggerRequestBuilderRequestsMetadata,
     },

@@ -2,10 +2,10 @@
   <img src="https://i.imgur.com/NtKvmk2.png" height="100" alt="HypeLabs" />
 </p>
 <h3 align="center">
-  HypeLabs Partner SDK
+  HypeLabs Connect SDK
 </h3>
 <p align="center">
-  The TypeScript client for the HypeLabs Partner API, for internal services. 🚀
+  The TypeScript client for the HypeLabs Connect API, for internal services. 🚀
 </p>
 <p align="center">
   <a href="https://www.npmjs.com/package/@hypelabs-llc/ts-sdk"><img src="https://img.shields.io/npm/v/@hypelabs-llc/ts-sdk?color=cb3837&label=npm" /></a>
@@ -18,7 +18,7 @@
 ## Requirements
 
 - Node.js 18 or later
-- A HypeLabs Partner API key (`hl_live_…`)
+- A HypeLabs Connect API key (`hl_live_…`)
 
 > The client authenticates with an API key, so run it **server-side** (Node, a backend, or a framework's
 > server runtime) — never ship your key to the browser.
@@ -34,9 +34,9 @@ pnpm add @hypelabs-llc/ts-sdk
 Create a client with your API key and call the API. Every call is async and returns typed models.
 
 ```ts
-import { createPartnerClient } from "@hypelabs-llc/ts-sdk";
+import { createConnectClient } from "@hypelabs-llc/ts-sdk";
 
-const client = createPartnerClient(process.env.PARTNER_API_KEY!);
+const client = createConnectClient(process.env.CONNECT_API_KEY!);
 
 const products = await client.products.get();
 for (const product of products ?? []) {
@@ -49,19 +49,19 @@ for (const product of products ?? []) {
 Keep one shared client in a server-only module so the key never reaches the browser:
 
 ```ts
-// lib/partner.ts
+// lib/connect.ts
 import "server-only";
-import { createPartnerClient } from "@hypelabs-llc/ts-sdk";
+import { createConnectClient } from "@hypelabs-llc/ts-sdk";
 
-export const partner = createPartnerClient(process.env.PARTNER_API_KEY!);
+export const connect = createConnectClient(process.env.CONNECT_API_KEY!);
 ```
 
 ```tsx
 // app/products/page.tsx — a Server Component
-import { partner } from "@/lib/partner";
+import { connect } from "@/lib/connect";
 
 export default async function Page() {
-  const products = await partner.products.get();
+  const products = await connect.products.get();
   return <pre>{JSON.stringify(products, null, 2)}</pre>;
 }
 ```

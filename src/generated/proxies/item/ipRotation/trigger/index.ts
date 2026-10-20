@@ -9,13 +9,13 @@ import { type BaseRequestBuilder, type Parsable, type ParsableFactory, type Requ
  */
 export interface TriggerRequestBuilder extends BaseRequestBuilder<TriggerRequestBuilder> {
     /**
-     * Triggers an immediate IP rotation on an allocated proxy.
+     * Triggers an immediate IP rotation on an owned proxy.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<ArrayBuffer>}
      */
      post(requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<ArrayBuffer | undefined>;
     /**
-     * Triggers an immediate IP rotation on an allocated proxy.
+     * Triggers an immediate IP rotation on an owned proxy.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {RequestInformation}
      */
