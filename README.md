@@ -5,7 +5,7 @@
   HypeLabs Connect SDK
 </h3>
 <p align="center">
-  The TypeScript client for the HypeLabs Connect API, for internal services. 🚀
+  The TypeScript client for the HypeLabs Connect API.
 </p>
 <p align="center">
   <a href="https://www.npmjs.com/package/@hypelabs-llc/ts-sdk"><img src="https://img.shields.io/npm/v/@hypelabs-llc/ts-sdk?color=cb3837&label=npm" /></a>
@@ -25,9 +25,13 @@
 
 ## Install
 
-```bash
-pnpm add @hypelabs-llc/ts-sdk
-```
+1. **Add the package:**
+
+   ```bash
+   pnpm add @hypelabs-llc/ts-sdk
+   ```
+
+2. **Create your organization** on the [HypeLabs Console](https://console.hypelabs.network/?utm_source=github&utm_medium=readme&utm_campaign=ts-sdk) and generate an API key.
 
 ## Usage
 
