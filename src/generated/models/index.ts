@@ -1695,6 +1695,7 @@ export function deserializeIntoOrder(order: Partial<Order> | undefined = {}) : R
         "isTrial": n => { order.isTrial = n.getBooleanValue(); },
         "items": n => { order.items = n.getCollectionOfObjectValues<OrderItem>(createOrderItemFromDiscriminatorValue); },
         "lastSettlementReference": n => { order.lastSettlementReference = n.getStringValue(); },
+        "lastTransactionId": n => { order.lastTransactionId = n.getGuidValue(); },
         "metadata": n => { order.metadata = n.getObjectValue<Order_metadata>(createOrder_metadataFromDiscriminatorValue); },
         "paymentMethod": n => { order.paymentMethod = n.getEnumValue<PaymentMethods>(PaymentMethodsObject); },
         "paymentProcessor": n => { order.paymentProcessor = n.getEnumValue<PaymentProcessors>(PaymentProcessorsObject); },
@@ -2509,6 +2510,10 @@ export interface Order extends AdditionalDataHolder, Parsable {
      * Reference of the last settlement already applied to this order, provider-prefixed (e.g.    `stripe:in_...`, `nowpayments:...`). Webhooks are delivered at least once, so a renewal that carries    this same reference has already been applied and is skipped, keeping a redelivered payment from adding a cycle    twice. Provider-agnostic so it covers every settlement source, current and future.
      */
     lastSettlementReference?: string | null;
+    /**
+     * The `BalanceTransaction` that last paid this order from the organization's balance (its creation or    its most recent extension). Lets a refund credit back exactly that payment without re-deriving its amount. Null    for orders paid through a processor (Stripe, crypto) or for trials.
+     */
+    lastTransactionId?: Guid | null;
     /**
      * The metadata property
      */
@@ -3655,6 +3660,7 @@ export function serializeOrder(writer: SerializationWriter, order: Partial<Order
     writer.writeBooleanValue("isTrial", order.isTrial);
     writer.writeCollectionOfObjectValues<OrderItem>("items", order.items, serializeOrderItem);
     writer.writeStringValue("lastSettlementReference", order.lastSettlementReference);
+    writer.writeGuidValue("lastTransactionId", order.lastTransactionId);
     writer.writeObjectValue<Order_metadata>("metadata", order.metadata, serializeOrder_metadata);
     writer.writeEnumValue<PaymentMethods>("paymentMethod", order.paymentMethod);
     writer.writeEnumValue<PaymentProcessors>("paymentProcessor", order.paymentProcessor);
@@ -4339,9 +4345,6 @@ export const BillingCyclesObject = {
     Yearly: "Yearly",
     OpenapiJsonNullSentinelValue2BF936000FE44250987AE5DDB203E464: "openapi-json-null-sentinel-value-2BF93600-0FE4-4250-987A-E5DDB203E464",
 } as const;
-/**
- * Which capability this option is (e.g. IPv6, IP scoring).
- */
 export const CapabilityTypesObject = {
     IpScore: "IpScore",
     Ipv6: "Ipv6",
