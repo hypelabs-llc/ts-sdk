@@ -609,6 +609,24 @@ export interface CreateOrderResponse extends AdditionalDataHolder, Parsable {
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {OrganizationBranding}
+ */
+// @ts-ignore
+export function createOrganizationBrandingFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoOrganizationBranding;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {OrganizationStore}
+ */
+// @ts-ignore
+export function createOrganizationStoreFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoOrganizationStore;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {PatchCustomerBillingRequest}
  */
 // @ts-ignore
@@ -1759,6 +1777,38 @@ export function deserializeIntoOrderItem_metadata(orderItem_metadata: Partial<Or
 }
 /**
  * The deserialization information for the current model
+ * @param OrganizationBranding The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoOrganizationBranding(organizationBranding: Partial<OrganizationBranding> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "accentColor": n => { organizationBranding.accentColor = n.getStringValue(); },
+        "iconUrl": n => { organizationBranding.iconUrl = n.getStringValue(); },
+        "logo": n => { organizationBranding.logo = n.getStringValue(); },
+        "logoDarkUrl": n => { organizationBranding.logoDarkUrl = n.getStringValue(); },
+        "logoLightUrl": n => { organizationBranding.logoLightUrl = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param OrganizationStore The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoOrganizationStore(organizationStore: Partial<OrganizationStore> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "crispWorkspaceId": n => { organizationStore.crispWorkspaceId = n.getStringValue(); },
+        "domain": n => { organizationStore.domain = n.getStringValue(); },
+        "showDocumentationTab": n => { organizationStore.showDocumentationTab = n.getBooleanValue(); },
+        "showReviewsTab": n => { organizationStore.showReviewsTab = n.getBooleanValue(); },
+        "supportUrl": n => { organizationStore.supportUrl = n.getStringValue(); },
+        "tagline": n => { organizationStore.tagline = n.getStringValue(); },
+        "topBannerMessage": n => { organizationStore.topBannerMessage = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param PatchCustomerBillingRequest The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -2607,6 +2657,64 @@ export interface OrderItem extends AdditionalDataHolder, Parsable {
 export interface OrderItem_metadata extends AdditionalDataHolder, Parsable {
 }
 export type OrderStatuses = (typeof OrderStatusesObject)[keyof typeof OrderStatusesObject];
+/**
+ * White-label branding for an organization (colors, logos, icon). A value object owned byOrganization with no identity of its own. All fields optional.Naming convention: an organization's sub-aspects are `Organization&lt;Aspect&gt;` value objectsexposed as a same-named property on Organization (e.g. this `Branding`, or a future`OrganizationBilling` as `Billing`). Same shape every time.
+ */
+export interface OrganizationBranding extends AdditionalDataHolder, Parsable {
+    /**
+     * Accent color as a hex string (e.g. "#4F46E5"), used to theme the reseller's UI.
+     */
+    accentColor?: string | null;
+    /**
+     * Icon / favicon (URL).
+     */
+    iconUrl?: string | null;
+    /**
+     * Single logo to fall back on: the light variant if set, otherwise the dark one.
+     */
+    logo?: string | null;
+    /**
+     * Logo shown on dark backgrounds (URL).
+     */
+    logoDarkUrl?: string | null;
+    /**
+     * Logo shown on light backgrounds (URL).
+     */
+    logoLightUrl?: string | null;
+}
+/**
+ * An organization's white-label store: the customer-facing storefront served under its own domain. A valueobject owned by Organization with no identity of its own; an organization has at most one, andit is null until a store is created. Follows the same convention as OrganizationBranding andOrganizationBilling: an `Organization&lt;Aspect&gt;` value object exposed as a same-namedproperty on Organization (here `Store`).
+ */
+export interface OrganizationStore extends AdditionalDataHolder, Parsable {
+    /**
+     * Crisp workspace id for the store's live chat.
+     */
+    crispWorkspaceId?: string | null;
+    /**
+     * Domain or subdomain the store is served on.
+     */
+    domain?: string | null;
+    /**
+     * Whether the store shows the documentation tab.
+     */
+    showDocumentationTab?: boolean | null;
+    /**
+     * Whether the store shows the reviews tab.
+     */
+    showReviewsTab?: boolean | null;
+    /**
+     * Link to the reseller's support channel, such as Telegram or Discord.
+     */
+    supportUrl?: string | null;
+    /**
+     * Short tagline shown on the store.
+     */
+    tagline?: string | null;
+    /**
+     * Message shown in the store's top banner; empty/null hides the banner.
+     */
+    topBannerMessage?: string | null;
+}
 export type PasswordHashSchemes = (typeof PasswordHashSchemesObject)[keyof typeof PasswordHashSchemesObject];
 /**
  * Partial update of a customer's billing details: only the provided fields are changed, the rest are    left as they are.
@@ -3730,6 +3838,40 @@ export function serializeOrderItem_metadata(writer: SerializationWriter, orderIt
 /**
  * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param OrganizationBranding The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeOrganizationBranding(writer: SerializationWriter, organizationBranding: Partial<OrganizationBranding> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!organizationBranding || isSerializingDerivedType) { return; }
+    writer.writeStringValue("accentColor", organizationBranding.accentColor);
+    writer.writeStringValue("iconUrl", organizationBranding.iconUrl);
+    writer.writeStringValue("logo", organizationBranding.logo);
+    writer.writeStringValue("logoDarkUrl", organizationBranding.logoDarkUrl);
+    writer.writeStringValue("logoLightUrl", organizationBranding.logoLightUrl);
+    writer.writeAdditionalData(organizationBranding.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param OrganizationStore The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeOrganizationStore(writer: SerializationWriter, organizationStore: Partial<OrganizationStore> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!organizationStore || isSerializingDerivedType) { return; }
+    writer.writeStringValue("crispWorkspaceId", organizationStore.crispWorkspaceId);
+    writer.writeStringValue("domain", organizationStore.domain);
+    writer.writeBooleanValue("showDocumentationTab", organizationStore.showDocumentationTab);
+    writer.writeBooleanValue("showReviewsTab", organizationStore.showReviewsTab);
+    writer.writeStringValue("supportUrl", organizationStore.supportUrl);
+    writer.writeStringValue("tagline", organizationStore.tagline);
+    writer.writeStringValue("topBannerMessage", organizationStore.topBannerMessage);
+    writer.writeAdditionalData(organizationStore.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param PatchCustomerBillingRequest The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
  */
@@ -4345,9 +4487,6 @@ export const BillingCyclesObject = {
     Yearly: "Yearly",
     OpenapiJsonNullSentinelValue2BF936000FE44250987AE5DDB203E464: "openapi-json-null-sentinel-value-2BF93600-0FE4-4250-987A-E5DDB203E464",
 } as const;
-/**
- * Which capability this option is (e.g. IPv6, IP scoring).
- */
 export const CapabilityTypesObject = {
     IpScore: "IpScore",
     Ipv6: "Ipv6",

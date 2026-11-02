@@ -12,6 +12,8 @@ import { IncidentsRequestBuilderNavigationMetadata, IncidentsRequestBuilderReque
 // @ts-ignore
 import { OrdersRequestBuilderNavigationMetadata, OrdersRequestBuilderRequestsMetadata, type OrdersRequestBuilder } from './orders/index.js';
 // @ts-ignore
+import { OrganizationsRequestBuilderNavigationMetadata, type OrganizationsRequestBuilder } from './organizations/index.js';
+// @ts-ignore
 import { ProxiesRequestBuilderNavigationMetadata, ProxiesRequestBuilderRequestsMetadata, type ProxiesRequestBuilder } from './proxies/index.js';
 // @ts-ignore
 import { ReviewsRequestBuilderNavigationMetadata, ReviewsRequestBuilderRequestsMetadata, type ReviewsRequestBuilder } from './reviews/index.js';
@@ -50,6 +52,10 @@ export interface ConnectApiClient extends BaseRequestBuilder<ConnectApiClient> {
      * The orders property
      */
     get orders(): OrdersRequestBuilder;
+    /**
+     * The organizations property
+     */
+    get organizations(): OrganizationsRequestBuilder;
     /**
      * The proxies property
      */
@@ -118,6 +124,9 @@ export const ConnectApiClientNavigationMetadata: Record<Exclude<keyof ConnectApi
     orders: {
         requestsMetadata: OrdersRequestBuilderRequestsMetadata,
         navigationMetadata: OrdersRequestBuilderNavigationMetadata,
+    },
+    organizations: {
+        navigationMetadata: OrganizationsRequestBuilderNavigationMetadata,
     },
     proxies: {
         requestsMetadata: ProxiesRequestBuilderRequestsMetadata,
