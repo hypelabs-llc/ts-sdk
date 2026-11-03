@@ -1799,7 +1799,9 @@ export function deserializeIntoOrganizationBranding(organizationBranding: Partia
 export function deserializeIntoOrganizationStore(organizationStore: Partial<OrganizationStore> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
         "crispWorkspaceId": n => { organizationStore.crispWorkspaceId = n.getStringValue(); },
+        "documentationMd": n => { organizationStore.documentationMd = n.getStringValue(); },
         "domain": n => { organizationStore.domain = n.getStringValue(); },
+        "name": n => { organizationStore.name = n.getStringValue(); },
         "showDocumentationTab": n => { organizationStore.showDocumentationTab = n.getBooleanValue(); },
         "showReviewsTab": n => { organizationStore.showReviewsTab = n.getBooleanValue(); },
         "supportUrl": n => { organizationStore.supportUrl = n.getStringValue(); },
@@ -2691,9 +2693,17 @@ export interface OrganizationStore extends AdditionalDataHolder, Parsable {
      */
     crispWorkspaceId?: string | null;
     /**
+     * Store documentation shown to customers, as markdown.
+     */
+    documentationMd?: string | null;
+    /**
      * Domain or subdomain the store is served on.
      */
     domain?: string | null;
+    /**
+     * Store name shown to customers.
+     */
+    name?: string | null;
     /**
      * Whether the store shows the documentation tab.
      */
@@ -3861,7 +3871,9 @@ export function serializeOrganizationBranding(writer: SerializationWriter, organ
 export function serializeOrganizationStore(writer: SerializationWriter, organizationStore: Partial<OrganizationStore> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!organizationStore || isSerializingDerivedType) { return; }
     writer.writeStringValue("crispWorkspaceId", organizationStore.crispWorkspaceId);
+    writer.writeStringValue("documentationMd", organizationStore.documentationMd);
     writer.writeStringValue("domain", organizationStore.domain);
+    writer.writeStringValue("name", organizationStore.name);
     writer.writeBooleanValue("showDocumentationTab", organizationStore.showDocumentationTab);
     writer.writeBooleanValue("showReviewsTab", organizationStore.showReviewsTab);
     writer.writeStringValue("supportUrl", organizationStore.supportUrl);
