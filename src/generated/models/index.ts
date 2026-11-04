@@ -1799,6 +1799,8 @@ export function deserializeIntoOrganizationBranding(organizationBranding: Partia
 export function deserializeIntoOrganizationStore(organizationStore: Partial<OrganizationStore> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
         "crispWorkspaceId": n => { organizationStore.crispWorkspaceId = n.getStringValue(); },
+        "customCss": n => { organizationStore.customCss = n.getStringValue(); },
+        "customJs": n => { organizationStore.customJs = n.getStringValue(); },
         "documentationMd": n => { organizationStore.documentationMd = n.getStringValue(); },
         "domain": n => { organizationStore.domain = n.getStringValue(); },
         "name": n => { organizationStore.name = n.getStringValue(); },
@@ -2692,6 +2694,14 @@ export interface OrganizationStore extends AdditionalDataHolder, Parsable {
      * Crisp workspace id for the store's live chat.
      */
     crispWorkspaceId?: string | null;
+    /**
+     * Custom CSS injected into the store's pages.
+     */
+    customCss?: string | null;
+    /**
+     * Custom JavaScript injected into the store's pages.
+     */
+    customJs?: string | null;
     /**
      * Store documentation shown to customers, as markdown.
      */
@@ -3871,6 +3881,8 @@ export function serializeOrganizationBranding(writer: SerializationWriter, organ
 export function serializeOrganizationStore(writer: SerializationWriter, organizationStore: Partial<OrganizationStore> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!organizationStore || isSerializingDerivedType) { return; }
     writer.writeStringValue("crispWorkspaceId", organizationStore.crispWorkspaceId);
+    writer.writeStringValue("customCss", organizationStore.customCss);
+    writer.writeStringValue("customJs", organizationStore.customJs);
     writer.writeStringValue("documentationMd", organizationStore.documentationMd);
     writer.writeStringValue("domain", organizationStore.domain);
     writer.writeStringValue("name", organizationStore.name);
@@ -4499,6 +4511,9 @@ export const BillingCyclesObject = {
     Yearly: "Yearly",
     OpenapiJsonNullSentinelValue2BF936000FE44250987AE5DDB203E464: "openapi-json-null-sentinel-value-2BF93600-0FE4-4250-987A-E5DDB203E464",
 } as const;
+/**
+ * Which capability this option is (e.g. IPv6, IP scoring).
+ */
 export const CapabilityTypesObject = {
     IpScore: "IpScore",
     Ipv6: "Ipv6",

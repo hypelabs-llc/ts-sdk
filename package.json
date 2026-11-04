@@ -1,6 +1,6 @@
 {
 	"name": "@hypelabs-llc/ts-sdk",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "The TypeScript client for the HypeLabs Connect API, for internal services.",
 	"license": "MIT",
 	"repository": {
