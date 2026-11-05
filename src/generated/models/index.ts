@@ -1106,9 +1106,9 @@ export interface CustomerAuthResponse extends AdditionalDataHolder, Parsable {
      */
     expiresAt?: Date | null;
     /**
-     * Whether the customer is banned (suspended). False for an active account.
+     * Whether the customer's account is active. False when the account has been suspended.
      */
-    isBanned?: boolean | null;
+    isActive?: boolean | null;
     /**
      * The customer's preferred locale (e.g. `en-US`), when set.
      */
@@ -1505,7 +1505,7 @@ export function deserializeIntoCustomerAuthResponse(customerAuthResponse: Partia
         "avatar": n => { customerAuthResponse.avatar = n.getStringValue(); },
         "email": n => { customerAuthResponse.email = n.getStringValue(); },
         "expiresAt": n => { customerAuthResponse.expiresAt = n.getDateValue(); },
-        "isBanned": n => { customerAuthResponse.isBanned = n.getBooleanValue(); },
+        "isActive": n => { customerAuthResponse.isActive = n.getBooleanValue(); },
         "locale": n => { customerAuthResponse.locale = n.getStringValue(); },
         "name": n => { customerAuthResponse.name = n.getStringValue(); },
         "userId": n => { customerAuthResponse.userId = n.getGuidValue(); },
@@ -3568,7 +3568,7 @@ export function serializeCustomerAuthResponse(writer: SerializationWriter, custo
     writer.writeStringValue("avatar", customerAuthResponse.avatar);
     writer.writeStringValue("email", customerAuthResponse.email);
     writer.writeDateValue("expiresAt", customerAuthResponse.expiresAt);
-    writer.writeBooleanValue("isBanned", customerAuthResponse.isBanned);
+    writer.writeBooleanValue("isActive", customerAuthResponse.isActive);
     writer.writeStringValue("locale", customerAuthResponse.locale);
     writer.writeStringValue("name", customerAuthResponse.name);
     writer.writeGuidValue("userId", customerAuthResponse.userId);
