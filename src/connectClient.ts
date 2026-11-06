@@ -15,11 +15,15 @@ import { ApiKeyAuthenticationProvider } from "./apiKeyAuthenticationProvider.js"
  * the generated Kiota plumbing directly.
  *
  * @param apiKey A Connect API key (e.g. `hl_live_…`).
+ * @param baseUrl Optional API base URL; leave empty to use the SDK default.
  */
-export function createConnectClient(apiKey: string) {
+export function createConnectClient(apiKey: string, baseUrl?: string) {
   if (!apiKey || !apiKey.trim()) {
     throw new Error("An API key is required.");
   }
   const adapter = new DefaultRequestAdapter(new ApiKeyAuthenticationProvider(apiKey));
+  if (baseUrl?.trim()) {
+    adapter.baseUrl = baseUrl;
+  }
   return createConnectApiClient(adapter);
 }
