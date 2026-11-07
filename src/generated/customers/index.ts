@@ -31,7 +31,7 @@ export interface CustomersRequestBuilder extends BaseRequestBuilder<CustomersReq
      */
      get(requestConfiguration?: RequestConfiguration<CustomersRequestBuilderGetQueryParameters> | undefined) : Promise<Customer[] | undefined>;
     /**
-     * Creates a customer for your organization.
+     * Creates a customer for your organization. Anonymous: the organization is named by the X-Organization-Id header, so your app can sign a new end user up without an API key.
      * @param body Payload to create a customer (your organization's own end user).
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<Customer>}
@@ -45,7 +45,7 @@ export interface CustomersRequestBuilder extends BaseRequestBuilder<CustomersReq
      */
      toGetRequestInformation(requestConfiguration?: RequestConfiguration<CustomersRequestBuilderGetQueryParameters> | undefined) : RequestInformation;
     /**
-     * Creates a customer for your organization.
+     * Creates a customer for your organization. Anonymous: the organization is named by the X-Organization-Id header, so your app can sign a new end user up without an API key.
      * @param body Payload to create a customer (your organization's own end user).
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {RequestInformation}
