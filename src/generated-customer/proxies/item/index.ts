@@ -4,6 +4,8 @@
 // @ts-ignore
 import { createProxyFromDiscriminatorValue, type Proxy } from '../../models/index.js';
 // @ts-ignore
+import { AnnotationsRequestBuilderRequestsMetadata, type AnnotationsRequestBuilder } from './annotations/index.js';
+// @ts-ignore
 import { CredentialsRequestBuilderRequestsMetadata, type CredentialsRequestBuilder } from './credentials/index.js';
 // @ts-ignore
 import { IpInfoRequestBuilderRequestsMetadata, type IpInfoRequestBuilder } from './ipInfo/index.js';
@@ -12,12 +14,18 @@ import { IpRotationRequestBuilderNavigationMetadata, IpRotationRequestBuilderReq
 // @ts-ignore
 import { OptionsRequestBuilderRequestsMetadata, type OptionsRequestBuilder } from './options/index.js';
 // @ts-ignore
+import { PingRequestBuilderRequestsMetadata, type PingRequestBuilder } from './ping/index.js';
+// @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
 
 /**
  * Builds and executes requests for operations under /proxies/{proxyId}
  */
 export interface WithProxyItemRequestBuilder extends BaseRequestBuilder<WithProxyItemRequestBuilder> {
+    /**
+     * The annotations property
+     */
+    get annotations(): AnnotationsRequestBuilder;
     /**
      * The credentials property
      */
@@ -34,6 +42,10 @@ export interface WithProxyItemRequestBuilder extends BaseRequestBuilder<WithProx
      * The optionsPath property
      */
     get optionsPath(): OptionsRequestBuilder;
+    /**
+     * The ping property
+     */
+    get ping(): PingRequestBuilder;
     /**
      * Returns one of your proxies with its connection details.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
@@ -55,6 +67,9 @@ export const WithProxyItemRequestBuilderUriTemplate = "{+baseurl}/proxies/{proxy
  * Metadata for all the navigation properties in the request builder.
  */
 export const WithProxyItemRequestBuilderNavigationMetadata: Record<Exclude<keyof WithProxyItemRequestBuilder, KeysToExcludeForNavigationMetadata>, NavigationMetadata> = {
+    annotations: {
+        requestsMetadata: AnnotationsRequestBuilderRequestsMetadata,
+    },
     credentials: {
         requestsMetadata: CredentialsRequestBuilderRequestsMetadata,
     },
@@ -67,6 +82,9 @@ export const WithProxyItemRequestBuilderNavigationMetadata: Record<Exclude<keyof
     },
     optionsPath: {
         requestsMetadata: OptionsRequestBuilderRequestsMetadata,
+    },
+    ping: {
+        requestsMetadata: PingRequestBuilderRequestsMetadata,
     },
 };
 /**

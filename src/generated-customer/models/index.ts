@@ -82,6 +82,19 @@ export interface ApiResponse extends AdditionalDataHolder, ApiError, Parsable {
 }
 export type BillingCycles = (typeof BillingCyclesObject)[keyof typeof BillingCyclesObject];
 /**
+ * Cancels an order: how to end its billing and whether to refund.
+ */
+export interface CancelOrderRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * Request a refund of the latest payment, granted only when the order is still within its refund    window. Defaults to false.
+     */
+    askRefund?: boolean | null;
+    /**
+     * End the order now instead of at the end of its paid period. False (the default) keeps it live until    its current expiry, then it lapses normally; true expires it immediately and releases its proxies.
+     */
+    immediateCancellation?: boolean | null;
+}
+/**
  * A catalog capability that proxies can expose (IPv6, IP scoring, and similar features).
  */
 export interface Capability extends AdditionalDataHolder, Parsable {
@@ -162,6 +175,15 @@ export function createApiResponseFromDiscriminatorValue(parseNode: ParseNode | u
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CancelOrderRequest}
+ */
+// @ts-ignore
+export function createCancelOrderRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCancelOrderRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {Capability}
  */
 // @ts-ignore
@@ -180,6 +202,24 @@ export function createCreateIncidentRequestFromDiscriminatorValue(parseNode: Par
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CreateOrderRequest}
+ */
+// @ts-ignore
+export function createCreateOrderRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCreateOrderRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CreateOrderResponse}
+ */
+// @ts-ignore
+export function createCreateOrderResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCreateOrderResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {CreateReviewRequest}
  */
 // @ts-ignore
@@ -194,6 +234,24 @@ export function createCreateReviewRequestFromDiscriminatorValue(parseNode: Parse
 // @ts-ignore
 export function createDatacenterFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoDatacenter;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {ExtendOrderRequest}
+ */
+// @ts-ignore
+export function createExtendOrderRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoExtendOrderRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {ExtendOrderResponse}
+ */
+// @ts-ignore
+export function createExtendOrderResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoExtendOrderResponse;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -282,6 +340,15 @@ export function createOrder_metadataFromDiscriminatorValue(parseNode: ParseNode 
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {OrderCriteria}
+ */
+// @ts-ignore
+export function createOrderCriteriaFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoOrderCriteria;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {Order}
  */
 // @ts-ignore
@@ -307,6 +374,48 @@ export function createOrderItemFromDiscriminatorValue(parseNode: ParseNode | und
     return deserializeIntoOrderItem;
 }
 /**
+ * Order request: the same selection as a price preview, plus whether it auto-renews.
+ */
+export interface CreateOrderRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * Priced selection the order is placed against.
+     */
+    criteria?: OrderCriteria | null;
+    /**
+     * The organization's end customer this order is for. Required for a retail order (it bills that customer on    the organization's connected account); must be null for wholesale (the organization itself is billed).
+     */
+    customerId?: Guid | null;
+    /**
+     * Your own reference for this order, unique within your organization. Attach it to make creation    idempotent: a request that times out can be safely retried with the same reference and returns the order that    was already placed instead of creating a duplicate. Optional.
+     */
+    externalReference?: string | null;
+    /**
+     * The intent property
+     */
+    intent?: OrderIntents | null;
+    /**
+     * Whether the order renews itself for another billing cycle at expiry instead of lapsing. Defaults to false.
+     */
+    isAutoRenew?: boolean | null;
+    /**
+     * Number of units to order. Defaults to 1.
+     */
+    quantity?: number | null;
+}
+/**
+ * The order that was placed: its id, and the checkout URL to follow when a hosted payment is needed.
+ */
+export interface CreateOrderResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * Unique order identifier.
+     */
+    orderId?: Guid | null;
+    /**
+     * Checkout URL the caller should send the customer to, or null when none is needed.
+     */
+    returnUrl?: string | null;
+}
+/**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {OrganizationBranding}
@@ -323,6 +432,33 @@ export function createOrganizationBrandingFromDiscriminatorValue(parseNode: Pars
 // @ts-ignore
 export function createOrganizationStoreFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoOrganizationStore;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {PatchProxyAnnotationRequest}
+ */
+// @ts-ignore
+export function createPatchProxyAnnotationRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoPatchProxyAnnotationRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {PreviewOrderRequest}
+ */
+// @ts-ignore
+export function createPreviewOrderRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoPreviewOrderRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {PreviewOrderResponse}
+ */
+// @ts-ignore
+export function createPreviewOrderResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoPreviewOrderResponse;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -426,6 +562,15 @@ export function createProxyOptionsFromDiscriminatorValue(parseNode: ParseNode | 
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {ProxyPingResponse}
+ */
+// @ts-ignore
+export function createProxyPingResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoProxyPingResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {ProxyProduct}
  */
 // @ts-ignore
@@ -501,6 +646,15 @@ export function createUpdateProxyCredentialsRequestFromDiscriminatorValue(parseN
 // @ts-ignore
 export function createUpdateProxyIpRotationRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoUpdateProxyIpRotationRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {UpdateProxyOptionsRequest}
+ */
+// @ts-ignore
+export function createUpdateProxyOptionsRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoUpdateProxyOptionsRequest;
 }
 /**
  * Catalog option for a single datacenter: a physical site proxies can be provisioned in.
@@ -601,6 +755,18 @@ export function deserializeIntoApiResponse(apiResponse: Partial<ApiResponse> | u
 }
 /**
  * The deserialization information for the current model
+ * @param CancelOrderRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCancelOrderRequest(cancelOrderRequest: Partial<CancelOrderRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "askRefund": n => { cancelOrderRequest.askRefund = n.getBooleanValue(); },
+        "immediateCancellation": n => { cancelOrderRequest.immediateCancellation = n.getBooleanValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param Capability The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -630,6 +796,34 @@ export function deserializeIntoCreateIncidentRequest(createIncidentRequest: Part
         "reporterEmail": n => { createIncidentRequest.reporterEmail = n.getStringValue(); },
         "subject": n => { createIncidentRequest.subject = n.getStringValue(); },
         "target": n => { createIncidentRequest.target = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param CreateOrderRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCreateOrderRequest(createOrderRequest: Partial<CreateOrderRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "criteria": n => { createOrderRequest.criteria = n.getObjectValue<OrderCriteria>(createOrderCriteriaFromDiscriminatorValue); },
+        "customerId": n => { createOrderRequest.customerId = n.getGuidValue(); },
+        "externalReference": n => { createOrderRequest.externalReference = n.getStringValue(); },
+        "intent": n => { createOrderRequest.intent = n.getEnumValue<OrderIntents>(OrderIntentsObject); },
+        "isAutoRenew": n => { createOrderRequest.isAutoRenew = n.getBooleanValue(); },
+        "quantity": n => { createOrderRequest.quantity = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param CreateOrderResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCreateOrderResponse(createOrderResponse: Partial<CreateOrderResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "orderId": n => { createOrderResponse.orderId = n.getGuidValue(); },
+        "returnUrl": n => { createOrderResponse.returnUrl = n.getStringValue(); },
     }
 }
 /**
@@ -664,6 +858,30 @@ export function deserializeIntoDatacenter(datacenter: Partial<Datacenter> | unde
         "name": n => { datacenter.name = n.getStringValue(); },
         "price": n => { datacenter.price = n.getNumberValue(); },
         "retailPrice": n => { datacenter.retailPrice = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param ExtendOrderRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoExtendOrderRequest(extendOrderRequest: Partial<ExtendOrderRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "billingCycle": n => { extendOrderRequest.billingCycle = n.getEnumValue<BillingCycles>(BillingCyclesObject); },
+        "paymentMethod": n => { extendOrderRequest.paymentMethod = n.getEnumValue<PaymentMethods>(PaymentMethodsObject); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param ExtendOrderResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoExtendOrderResponse(extendOrderResponse: Partial<ExtendOrderResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "orderId": n => { extendOrderResponse.orderId = n.getGuidValue(); },
+        "returnUrl": n => { extendOrderResponse.returnUrl = n.getStringValue(); },
     }
 }
 /**
@@ -813,6 +1031,24 @@ export function deserializeIntoOrder_metadata(order_metadata: Partial<Order_meta
 }
 /**
  * The deserialization information for the current model
+ * @param OrderCriteria The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoOrderCriteria(orderCriteria: Partial<OrderCriteria> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "billingCycle": n => { orderCriteria.billingCycle = n.getEnumValue<BillingCycles>(BillingCyclesObject); },
+        "capabilities": n => { orderCriteria.capabilities = n.getCollectionOfEnumValues<CapabilityTypes>(CapabilityTypesObject); },
+        "countryCode": n => { orderCriteria.countryCode = n.getStringValue(); },
+        "datacenterId": n => { orderCriteria.datacenterId = n.getGuidValue(); },
+        "ispId": n => { orderCriteria.ispId = n.getGuidValue(); },
+        "locationId": n => { orderCriteria.locationId = n.getGuidValue(); },
+        "paymentMethod": n => { orderCriteria.paymentMethod = n.getEnumValue<PaymentMethods>(PaymentMethodsObject); },
+        "productId": n => { orderCriteria.productId = n.getGuidValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param OrderItem The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -870,6 +1106,50 @@ export function deserializeIntoOrganizationStore(organizationStore: Partial<Orga
         "supportUrl": n => { organizationStore.supportUrl = n.getStringValue(); },
         "tagline": n => { organizationStore.tagline = n.getStringValue(); },
         "topBannerMessage": n => { organizationStore.topBannerMessage = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param PatchProxyAnnotationRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoPatchProxyAnnotationRequest(patchProxyAnnotationRequest: Partial<PatchProxyAnnotationRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "note": n => { patchProxyAnnotationRequest.note = n.getStringValue(); },
+        "tags": n => { patchProxyAnnotationRequest.tags = n.getCollectionOfPrimitiveValues<string>("string"); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param PreviewOrderRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoPreviewOrderRequest(previewOrderRequest: Partial<PreviewOrderRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "criteria": n => { previewOrderRequest.criteria = n.getObjectValue<OrderCriteria>(createOrderCriteriaFromDiscriminatorValue); },
+        "customerId": n => { previewOrderRequest.customerId = n.getGuidValue(); },
+        "intent": n => { previewOrderRequest.intent = n.getEnumValue<OrderIntents>(OrderIntentsObject); },
+        "quantity": n => { previewOrderRequest.quantity = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param PreviewOrderResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoPreviewOrderResponse(previewOrderResponse: Partial<PreviewOrderResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "availableProxies": n => { previewOrderResponse.availableProxies = n.getNumberValue(); },
+        "currency": n => { previewOrderResponse.currency = n.getStringValue(); },
+        "discount": n => { previewOrderResponse.discount = n.getNumberValue(); },
+        "discountPercent": n => { previewOrderResponse.discountPercent = n.getNumberValue(); },
+        "quantity": n => { previewOrderResponse.quantity = n.getNumberValue(); },
+        "subtotal": n => { previewOrderResponse.subtotal = n.getNumberValue(); },
+        "total": n => { previewOrderResponse.total = n.getNumberValue(); },
+        "unitPrice": n => { previewOrderResponse.unitPrice = n.getNumberValue(); },
     }
 }
 /**
@@ -1028,6 +1308,20 @@ export function deserializeIntoProxyOptions_metadata(proxyOptions_metadata: Part
 }
 /**
  * The deserialization information for the current model
+ * @param ProxyPingResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoProxyPingResponse(proxyPingResponse: Partial<ProxyPingResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "exitIp": n => { proxyPingResponse.exitIp = n.getStringValue(); },
+        "latencyMilliseconds": n => { proxyPingResponse.latencyMilliseconds = n.getNumberValue(); },
+        "reachable": n => { proxyPingResponse.reachable = n.getBooleanValue(); },
+        "statusCode": n => { proxyPingResponse.statusCode = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param ProxyProduct The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -1107,6 +1401,43 @@ export function deserializeIntoUpdateProxyIpRotationRequest(updateProxyIpRotatio
     return {
         "intervalSeconds": n => { updateProxyIpRotationRequest.intervalSeconds = n.getNumberValue(); },
     }
+}
+/**
+ * The deserialization information for the current model
+ * @param UpdateProxyOptionsRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoUpdateProxyOptionsRequest(updateProxyOptionsRequest: Partial<UpdateProxyOptionsRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "resolutionMode": n => { updateProxyOptionsRequest.resolutionMode = n.getEnumValue<ResolutionModes>(ResolutionModesObject); },
+    }
+}
+/**
+ * Renews an existing order for another billing cycle, optionally on different terms.
+ */
+export interface ExtendOrderRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The billingCycle property
+     */
+    billingCycle?: BillingCycles | null;
+    /**
+     * The paymentMethod property
+     */
+    paymentMethod?: PaymentMethods | null;
+}
+/**
+ * The extended order: its id, and the checkout URL to follow when a hosted payment is needed.
+ */
+export interface ExtendOrderResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * Unique order identifier.
+     */
+    orderId?: Guid | null;
+    /**
+     * Checkout URL the caller should send the customer to, or null when none is needed.
+     */
+    returnUrl?: string | null;
 }
 /**
  * A complaint reported about a proxy (or other resource), usually by a customer. string Incident.Target andstring Incident.ReporterEmail are free-form strings until they are linked to their own entities.
@@ -1400,6 +1731,43 @@ export interface Order extends AdditionalDataHolder, Parsable {
 }
 export interface Order_metadata extends AdditionalDataHolder, Parsable {
 }
+/**
+ * Everything that narrows a product's price and stock: the order-cascade selection (Location → ISP → Datacenter),the required capabilities, and the billing cycle and payment method. Shared by the catalog facets and theorder flow. A null dimension widens the scope; it carries no validation itself. Callers enforce the chain(a level requires all its parents) with the catalog's chain guards.
+ */
+export interface OrderCriteria extends AdditionalDataHolder, Parsable {
+    /**
+     * The billingCycle property
+     */
+    billingCycle?: BillingCycles | null;
+    /**
+     * Capabilities the product must provide to match.
+     */
+    capabilities?: CapabilityTypes[] | null;
+    /**
+     * ISO 3166-1 alpha-2 country code of the selected location, resolved from Guid? OrderCriteria.LocationId so a country-level price row can match. Null until resolved.
+     */
+    countryCode?: string | null;
+    /**
+     * Identifier of the selected datacenter in the order cascade.
+     */
+    datacenterId?: Guid | null;
+    /**
+     * Identifier of the selected ISP in the order cascade.
+     */
+    ispId?: Guid | null;
+    /**
+     * Identifier of the selected location in the order cascade.
+     */
+    locationId?: Guid | null;
+    /**
+     * The paymentMethod property
+     */
+    paymentMethod?: PaymentMethods | null;
+    /**
+     * Identifier of the product being priced or ordered.
+     */
+    productId?: Guid | null;
+}
 export type OrderIntents = (typeof OrderIntentsObject)[keyof typeof OrderIntentsObject];
 /**
  * One line of an Order? OrderItem.Order: a product bought in a given quantity, with the resources delivered for it.
@@ -1503,8 +1871,79 @@ export interface OrganizationStore extends AdditionalDataHolder, Parsable {
      */
     topBannerMessage?: string | null;
 }
+/**
+ * Patch of an organization's annotation of a proxy: its free-form note and its tags. A null field is    left unchanged; an empty string clears the note and an empty array clears the tags.
+ */
+export interface PatchProxyAnnotationRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The free-form note. Null leaves it unchanged; an empty string clears it.
+     */
+    note?: string | null;
+    /**
+     * The tags. Null leaves them unchanged; an empty array clears them.
+     */
+    tags?: string[] | null;
+}
 export type PaymentMethods = (typeof PaymentMethodsObject)[keyof typeof PaymentMethodsObject];
 export type PaymentProcessors = (typeof PaymentProcessorsObject)[keyof typeof PaymentProcessorsObject];
+/**
+ * Payload to preview an order's price for a given selection, before placing it.
+ */
+export interface PreviewOrderRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * Priced selection the order is placed against.
+     */
+    criteria?: OrderCriteria | null;
+    /**
+     * The organization's end customer this order is for. Required for a retail order (it bills that customer on    the organization's connected account); must be null for wholesale (the organization itself is billed).
+     */
+    customerId?: Guid | null;
+    /**
+     * The intent property
+     */
+    intent?: OrderIntents | null;
+    /**
+     * Number of units to order. Defaults to 1.
+     */
+    quantity?: number | null;
+}
+/**
+ * The computed price for an order selection, before it is placed.
+ */
+export interface PreviewOrderResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * How many proxies are available for the selection right now.
+     */
+    availableProxies?: number | null;
+    /**
+     * ISO 4217 currency code the amounts are expressed in.
+     */
+    currency?: string | null;
+    /**
+     * Amount saved versus paying monthly for the same duration. Null when there is no saving.
+     */
+    discount?: number | null;
+    /**
+     * Saving as a percentage of the monthly-rate total, from 0 to 100. Null when there is no saving.
+     */
+    discountPercent?: number | null;
+    /**
+     * Number of units in the selection.
+     */
+    quantity?: number | null;
+    /**
+     * Unit price multiplied by quantity, before any future discounts.
+     */
+    subtotal?: number | null;
+    /**
+     * Final amount to charge (equals subtotal until discounts exist).
+     */
+    total?: number | null;
+    /**
+     * Resolved price for a single unit.
+     */
+    unitPrice?: number | null;
+}
 export type PricingTypes = (typeof PricingTypesObject)[keyof typeof PricingTypesObject];
 /**
  * A catalog product: the shared catalog-option shape (id, stock, price, availability) plus the    product's own metadata. Internal shape (operating modes, price rows, granularity) stays on the    `Entities.Product` entity.
@@ -1736,6 +2175,27 @@ export interface ProxyOptions extends AdditionalDataHolder, Parsable {
 export interface ProxyOptions_metadata extends AdditionalDataHolder, Parsable {
 }
 /**
+ * The result of testing a proxy through a real request: whether it answered, the round-trip latency,    the HTTP status the request came back with, and the exit IP the proxy routed through.
+ */
+export interface ProxyPingResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The public IP the proxy routed the request through, as reported by the reach target; null when    unreachable or the target didn't return one.
+     */
+    exitIp?: string | null;
+    /**
+     * Round-trip latency in milliseconds when reachable; null otherwise.
+     */
+    latencyMilliseconds?: number | null;
+    /**
+     * Whether the proxy answered the request.
+     */
+    reachable?: boolean | null;
+    /**
+     * The HTTP status code the request came back with; null when the proxy couldn't be reached.
+     */
+    statusCode?: number | null;
+}
+/**
  * The catalog product a proxy was ordered as: the head of the cascade down to location, ISP and    datacenter.
  */
 export interface ProxyProduct extends AdditionalDataHolder, Parsable {
@@ -1884,6 +2344,19 @@ export function serializeApiResponse(writer: SerializationWriter, apiResponse: P
 }
 /**
  * Serializes information the current object
+ * @param CancelOrderRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCancelOrderRequest(writer: SerializationWriter, cancelOrderRequest: Partial<CancelOrderRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!cancelOrderRequest || isSerializingDerivedType) { return; }
+    writer.writeBooleanValue("askRefund", cancelOrderRequest.askRefund);
+    writer.writeBooleanValue("immediateCancellation", cancelOrderRequest.immediateCancellation);
+    writer.writeAdditionalData(cancelOrderRequest.additionalData);
+}
+/**
+ * Serializes information the current object
  * @param Capability The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -1916,6 +2389,36 @@ export function serializeCreateIncidentRequest(writer: SerializationWriter, crea
     writer.writeStringValue("subject", createIncidentRequest.subject);
     writer.writeStringValue("target", createIncidentRequest.target);
     writer.writeAdditionalData(createIncidentRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param CreateOrderRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCreateOrderRequest(writer: SerializationWriter, createOrderRequest: Partial<CreateOrderRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!createOrderRequest || isSerializingDerivedType) { return; }
+    writer.writeObjectValue<OrderCriteria>("criteria", createOrderRequest.criteria, serializeOrderCriteria);
+    writer.writeGuidValue("customerId", createOrderRequest.customerId);
+    writer.writeStringValue("externalReference", createOrderRequest.externalReference);
+    writer.writeEnumValue<OrderIntents>("intent", createOrderRequest.intent);
+    writer.writeBooleanValue("isAutoRenew", createOrderRequest.isAutoRenew);
+    writer.writeNumberValue("quantity", createOrderRequest.quantity);
+    writer.writeAdditionalData(createOrderRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param CreateOrderResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCreateOrderResponse(writer: SerializationWriter, createOrderResponse: Partial<CreateOrderResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!createOrderResponse || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("orderId", createOrderResponse.orderId);
+    writer.writeStringValue("returnUrl", createOrderResponse.returnUrl);
+    writer.writeAdditionalData(createOrderResponse.additionalData);
 }
 /**
  * Serializes information the current object
@@ -1952,6 +2455,32 @@ export function serializeDatacenter(writer: SerializationWriter, datacenter: Par
     writer.writeNumberValue("price", datacenter.price);
     writer.writeNumberValue("retailPrice", datacenter.retailPrice);
     writer.writeAdditionalData(datacenter.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param ExtendOrderRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeExtendOrderRequest(writer: SerializationWriter, extendOrderRequest: Partial<ExtendOrderRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!extendOrderRequest || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<BillingCycles>("billingCycle", extendOrderRequest.billingCycle);
+    writer.writeEnumValue<PaymentMethods>("paymentMethod", extendOrderRequest.paymentMethod);
+    writer.writeAdditionalData(extendOrderRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param ExtendOrderResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeExtendOrderResponse(writer: SerializationWriter, extendOrderResponse: Partial<ExtendOrderResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!extendOrderResponse || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("orderId", extendOrderResponse.orderId);
+    writer.writeStringValue("returnUrl", extendOrderResponse.returnUrl);
+    writer.writeAdditionalData(extendOrderResponse.additionalData);
 }
 /**
  * Serializes information the current object
@@ -2109,6 +2638,26 @@ export function serializeOrder_metadata(writer: SerializationWriter, order_metad
 /**
  * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param OrderCriteria The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeOrderCriteria(writer: SerializationWriter, orderCriteria: Partial<OrderCriteria> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!orderCriteria || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<BillingCycles>("billingCycle", orderCriteria.billingCycle);
+    if(orderCriteria.capabilities)
+    writer.writeCollectionOfEnumValues<CapabilityTypes>("capabilities", orderCriteria.capabilities);
+    writer.writeStringValue("countryCode", orderCriteria.countryCode);
+    writer.writeGuidValue("datacenterId", orderCriteria.datacenterId);
+    writer.writeGuidValue("ispId", orderCriteria.ispId);
+    writer.writeGuidValue("locationId", orderCriteria.locationId);
+    writer.writeEnumValue<PaymentMethods>("paymentMethod", orderCriteria.paymentMethod);
+    writer.writeGuidValue("productId", orderCriteria.productId);
+    writer.writeAdditionalData(orderCriteria.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param OrderItem The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
  */
@@ -2170,6 +2719,53 @@ export function serializeOrganizationStore(writer: SerializationWriter, organiza
     writer.writeStringValue("tagline", organizationStore.tagline);
     writer.writeStringValue("topBannerMessage", organizationStore.topBannerMessage);
     writer.writeAdditionalData(organizationStore.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param PatchProxyAnnotationRequest The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializePatchProxyAnnotationRequest(writer: SerializationWriter, patchProxyAnnotationRequest: Partial<PatchProxyAnnotationRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!patchProxyAnnotationRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("note", patchProxyAnnotationRequest.note);
+    writer.writeCollectionOfPrimitiveValues<string>("tags", patchProxyAnnotationRequest.tags);
+    writer.writeAdditionalData(patchProxyAnnotationRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param PreviewOrderRequest The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializePreviewOrderRequest(writer: SerializationWriter, previewOrderRequest: Partial<PreviewOrderRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!previewOrderRequest || isSerializingDerivedType) { return; }
+    writer.writeObjectValue<OrderCriteria>("criteria", previewOrderRequest.criteria, serializeOrderCriteria);
+    writer.writeGuidValue("customerId", previewOrderRequest.customerId);
+    writer.writeEnumValue<OrderIntents>("intent", previewOrderRequest.intent);
+    writer.writeNumberValue("quantity", previewOrderRequest.quantity);
+    writer.writeAdditionalData(previewOrderRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param PreviewOrderResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializePreviewOrderResponse(writer: SerializationWriter, previewOrderResponse: Partial<PreviewOrderResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!previewOrderResponse || isSerializingDerivedType) { return; }
+    writer.writeNumberValue("availableProxies", previewOrderResponse.availableProxies);
+    writer.writeStringValue("currency", previewOrderResponse.currency);
+    writer.writeNumberValue("discount", previewOrderResponse.discount);
+    writer.writeNumberValue("discountPercent", previewOrderResponse.discountPercent);
+    writer.writeNumberValue("quantity", previewOrderResponse.quantity);
+    writer.writeNumberValue("subtotal", previewOrderResponse.subtotal);
+    writer.writeNumberValue("total", previewOrderResponse.total);
+    writer.writeNumberValue("unitPrice", previewOrderResponse.unitPrice);
+    writer.writeAdditionalData(previewOrderResponse.additionalData);
 }
 /**
  * Serializes information the current object
@@ -2340,6 +2936,21 @@ export function serializeProxyOptions_metadata(writer: SerializationWriter, prox
 /**
  * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param ProxyPingResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeProxyPingResponse(writer: SerializationWriter, proxyPingResponse: Partial<ProxyPingResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!proxyPingResponse || isSerializingDerivedType) { return; }
+    writer.writeStringValue("exitIp", proxyPingResponse.exitIp);
+    writer.writeNumberValue("latencyMilliseconds", proxyPingResponse.latencyMilliseconds);
+    writer.writeBooleanValue("reachable", proxyPingResponse.reachable);
+    writer.writeNumberValue("statusCode", proxyPingResponse.statusCode);
+    writer.writeAdditionalData(proxyPingResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param ProxyProduct The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
  */
@@ -2426,6 +3037,18 @@ export function serializeUpdateProxyIpRotationRequest(writer: SerializationWrite
     writer.writeAdditionalData(updateProxyIpRotationRequest.additionalData);
 }
 /**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param UpdateProxyOptionsRequest The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeUpdateProxyOptionsRequest(writer: SerializationWriter, updateProxyOptionsRequest: Partial<UpdateProxyOptionsRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!updateProxyOptionsRequest || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<ResolutionModes>("resolutionMode", updateProxyOptionsRequest.resolutionMode);
+    writer.writeAdditionalData(updateProxyOptionsRequest.additionalData);
+}
+/**
  * Request to change an allocated proxy's credentials. A null username or password is generated from the    organization's default formats.
  */
 export interface UpdateProxyCredentialsRequest extends AdditionalDataHolder, Parsable {
@@ -2452,6 +3075,15 @@ export interface UpdateProxyIpRotationRequest extends AdditionalDataHolder, Pars
     intervalSeconds?: number | null;
 }
 /**
+ * The feature options to set on a proxy. A non-default option is only accepted when the proxy exposes    the capability it depends on (see ProxyOptions).
+ */
+export interface UpdateProxyOptionsRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * How the proxy resolves addresses. Non-default modes require the proxy's IPv6 capability.
+     */
+    resolutionMode?: ResolutionModes | null;
+}
+/**
  * Publication state of the announcement: only Published ones are shown.
  */
 export const AnnouncementStatusesObject = {
@@ -2460,7 +3092,7 @@ export const AnnouncementStatusesObject = {
     Archived: "Archived",
 } as const;
 /**
- * Billing period the order is charged on (monthly, yearly). Null for a trial (free, time-boxed).
+ * Billing period of the selected price.
  */
 export const BillingCyclesObject = {
     Daily: "Daily",
@@ -2483,11 +3115,12 @@ export const IncidentStatusesObject = {
     Dismissed: "Dismissed",
 } as const;
 /**
- * Why the order was placed: wholesale (the organization buying for itself, on our platform account) or    retail (reselling to its own customer, on its connected account). Persisted so later actions — cancellation,    refund — resolve the same Stripe account the order settled on, instead of re-deriving it from the request.
+ * Reason the order is placed, which decides how it is priced and paid. Null defaults to the caller's channel: OrderIntents.Wholesale from the console, OrderIntents.Retail from the API.
  */
 export const OrderIntentsObject = {
     Wholesale: "Wholesale",
     Retail: "Retail",
+    OpenapiJsonNullSentinelValue2BF936000FE44250987AE5DDB203E464: "openapi-json-null-sentinel-value-2BF93600-0FE4-4250-987A-E5DDB203E464",
 } as const;
 /**
  * Commercial state of the order. Stored as the source of truth for states that aren't derivable from    the dates (`Provisioning`, `Expired` once a worker confirms it, and later cancellations or holds).    The transient `GracePeriod` is layered on at read time by `ResolveStatus` from DateTimeOffset? Order.ExpiresAt    and the organization's grace policy. Defaults to `Pending` (nothing paid or set up yet); each flow sets    the real state through the transition helpers.
@@ -2501,7 +3134,7 @@ export const OrderStatusesObject = {
     Deleted: "Deleted",
 } as const;
 /**
- * How the order is paid. Null for a trial (free).
+ * Payment method for the order.
  */
 export const PaymentMethodsObject = {
     Balance: "Balance",
