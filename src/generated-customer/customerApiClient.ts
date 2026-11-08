@@ -6,6 +6,8 @@ import { AnnouncementsRequestBuilderRequestsMetadata, type AnnouncementsRequestB
 // @ts-ignore
 import { CatalogRequestBuilderNavigationMetadata, type CatalogRequestBuilder } from './catalog/index.js';
 // @ts-ignore
+import { CustomersRequestBuilderNavigationMetadata, CustomersRequestBuilderRequestsMetadata, type CustomersRequestBuilder } from './customers/index.js';
+// @ts-ignore
 import { IncidentsRequestBuilderRequestsMetadata, type IncidentsRequestBuilder } from './incidents/index.js';
 // @ts-ignore
 import { OrdersRequestBuilderNavigationMetadata, OrdersRequestBuilderRequestsMetadata, type OrdersRequestBuilder } from './orders/index.js';
@@ -73,6 +75,10 @@ export interface CustomerApiClient extends BaseRequestBuilder<CustomerApiClient>
      */
     get catalog(): CatalogRequestBuilder;
     /**
+     * The customers property
+     */
+    get customers(): CustomersRequestBuilder;
+    /**
      * The incidents property
      */
     get incidents(): IncidentsRequestBuilder;
@@ -106,6 +112,10 @@ export const CustomerApiClientNavigationMetadata: Record<Exclude<keyof CustomerA
     },
     catalog: {
         navigationMetadata: CatalogRequestBuilderNavigationMetadata,
+    },
+    customers: {
+        requestsMetadata: CustomersRequestBuilderRequestsMetadata,
+        navigationMetadata: CustomersRequestBuilderNavigationMetadata,
     },
     incidents: {
         requestsMetadata: IncidentsRequestBuilderRequestsMetadata,

@@ -80,6 +80,61 @@ export interface ApiResponse extends AdditionalDataHolder, ApiError, Parsable {
      */
     statusCode?: number | null;
 }
+/**
+ * Identity attested by an external provider (Google, GitHub, Apple, ...) after the organization's own front-end(or app) completed the OAuth sign-in. The Connect API trusts the attested identity — it never talks to theprovider itself — and finds or creates the matching customer, scoped to the calling organization.
+ */
+export interface AuthenticateCustomerOAuthRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * Display name reported by the provider, used when creating the customer. Null when the provider gives none.
+     */
+    displayName?: string | null;
+    /**
+     * Email address attested by the provider, used to link the sign-in to an existing customer or create one.    Optional: Apple only returns it on the first authorization, so later sign-ins match by the provider link alone.    Required when no customer matches yet (a first-time sign-in with no email cannot create an account).
+     */
+    email?: string | null;
+    /**
+     * Preferred locale (e.g. `en-US`) reported by the provider. Refreshed on each sign-in; ignored when null.
+     */
+    locale?: string | null;
+    /**
+     * Provider key the customer signed in through, e.g. `google`, `apple`, `discord`. A free    string, not an enum: an organization can wire up any provider without Connect needing a new release.
+     */
+    provider?: string | null;
+    /**
+     * Stable identifier of the customer at the provider (the provider's account id).
+     */
+    providerId?: string | null;
+    /**
+     * Device push-notification token (e.g. the app's APNs token), sent at sign-in. Refreshed when provided;    ignored when null.
+     */
+    pushNotificationsToken?: string | null;
+}
+/**
+ * Credentials to authenticate one of the organization's customers.
+ */
+export interface AuthenticateCustomerRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The customer's email address.
+     */
+    email?: string | null;
+    /**
+     * The customer's one-time password (2FA code), when they have it enabled. Omit otherwise.
+     */
+    otp?: string | null;
+    /**
+     * The customer's password.
+     */
+    password?: string | null;
+}
+/**
+ * Identity attested by Telegram after a customer started the organization's bot. The Telegram user id is trustedas-is (Telegram authenticates it; it cannot be forged), and the Connect API resolves the customer alreadylinked to it. No customer is created here: the link is established elsewhere, by a signed-in customer addingtheir Telegram account, so an unlinked user is rejected rather than silently given a fresh account.
+ */
+export interface AuthenticateCustomerTelegramRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The Telegram user id (the person's `from.id`) of the account talking to the bot, as the Bot API    reports it.
+     */
+    telegramUserId?: string | null;
+}
 export type BillingCycles = (typeof BillingCyclesObject)[keyof typeof BillingCyclesObject];
 /**
  * Cancels an order: how to end its billing and whether to refund.
@@ -175,6 +230,33 @@ export function createApiResponseFromDiscriminatorValue(parseNode: ParseNode | u
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AuthenticateCustomerOAuthRequest}
+ */
+// @ts-ignore
+export function createAuthenticateCustomerOAuthRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAuthenticateCustomerOAuthRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AuthenticateCustomerRequest}
+ */
+// @ts-ignore
+export function createAuthenticateCustomerRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAuthenticateCustomerRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AuthenticateCustomerTelegramRequest}
+ */
+// @ts-ignore
+export function createAuthenticateCustomerTelegramRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAuthenticateCustomerTelegramRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {CancelOrderRequest}
  */
 // @ts-ignore
@@ -189,6 +271,15 @@ export function createCancelOrderRequestFromDiscriminatorValue(parseNode: ParseN
 // @ts-ignore
 export function createCapabilityFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoCapability;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CreateCustomerRequest}
+ */
+// @ts-ignore
+export function createCreateCustomerRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCreateCustomerRequest;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -225,6 +316,97 @@ export function createCreateOrderResponseFromDiscriminatorValue(parseNode: Parse
 // @ts-ignore
 export function createCreateReviewRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoCreateReviewRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {Customer_externalLogins}
+ */
+// @ts-ignore
+export function createCustomer_externalLoginsFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCustomer_externalLogins;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {Customer_metadata}
+ */
+// @ts-ignore
+export function createCustomer_metadataFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCustomer_metadata;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CustomerAuthResponse}
+ */
+// @ts-ignore
+export function createCustomerAuthResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCustomerAuthResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CustomerBilling}
+ */
+// @ts-ignore
+export function createCustomerBillingFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCustomerBilling;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {Customer}
+ */
+// @ts-ignore
+export function createCustomerFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCustomer;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CustomerKyc}
+ */
+// @ts-ignore
+export function createCustomerKycFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCustomerKyc;
+}
+/**
+ * Payload to create a customer (your organization's own end user).
+ */
+export interface CreateCustomerRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * The billing property
+     */
+    billing?: CustomerBilling | null;
+    /**
+     * Name shown for the customer in the dashboard and emails.
+     */
+    displayName?: string | null;
+    /**
+     * Email address of the customer. Must be unique within your organization.
+     */
+    email?: string | null;
+    /**
+     * Identifier of the customer in your own system. Matches records across systems and makes creation idempotent.
+     */
+    externalId?: string | null;
+    /**
+     * Preferred locale (e.g. "en", "fr") for emails and OTP messages.
+     */
+    locale?: string | null;
+    /**
+     * Initial password of the customer, stored hashed. Omit for an OAuth-only or passwordless user.
+     */
+    password?: string | null;
+    /**
+     * Phone number of the customer.
+     */
+    phoneNumber?: string | null;
+    /**
+     * Page (your own) linked in the verification email sent on creation, with the token appended as a query parameter. Omit to leave the email unverified and skip the email.
+     */
+    verificationUrl?: string | null;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -657,6 +839,209 @@ export function createUpdateProxyOptionsRequestFromDiscriminatorValue(parseNode:
     return deserializeIntoUpdateProxyOptionsRequest;
 }
 /**
+ * An end user that an Organization? Customer.Organization manages through its API, scoped to that organization so twoorgs can hold the same email without collision. Not an ASP.NET Identity user (that is the platform's ownUser): customers never enter the auth pipeline.
+ */
+export interface Customer extends AdditionalDataHolder, Parsable {
+    /**
+     * Domains the customer's proxies authorize by default. Empty means no domain restriction set here;    `*` allows all.
+     */
+    allowedDomains?: string[] | null;
+    /**
+     * IP addresses the customer's proxies authorize by default. Empty means no IP restriction set here.
+     */
+    allowedIps?: string[] | null;
+    /**
+     * The user's Gravatar avatar URL, derived from their email (falls back to a neutral silhouette    when the address has no Gravatar). Computed, not stored.
+     */
+    avatarUrl?: string | null;
+    /**
+     * When the customer was banned. Null while active: banning disables access without deleting the    record, so the value is kept for the audit trail.
+     */
+    bannedAt?: Date | null;
+    /**
+     * The billing property
+     */
+    billing?: CustomerBilling | null;
+    /**
+     * The customer's ISO 3166-1 alpha-2 country code (uppercase): their billing country when set,    otherwise the region of their locale (e.g. `en-US` → `US`). Computed, not persisted.
+     */
+    countryCode?: string | null;
+    /**
+     * Display name shown for the customer. Null when none was provided.
+     */
+    displayName?: string | null;
+    /**
+     * The customer's email. Unique within the owning organization.
+     */
+    email?: string | null;
+    /**
+     * Whether the email has been verified, set true when the customer follows the verification link    (see `CustomerService.VerifyEmailAsync`). Defaults to false.
+     */
+    emailVerified?: boolean | null;
+    /**
+     * Identifier this customer has in the organization's own system, matched to keep creation    idempotent. Null when the organization supplies none.
+     */
+    externalId?: string | null;
+    /**
+     * The user's external OAuth logins, keyed by provider (e.g. "apple", "google") with the provider's    user identifier as the value. Stored as JSON. Null when the user has no linked social logins.
+     */
+    externalLogins?: Customer_externalLogins | null;
+    /**
+     * The gracePeriodPolicy property
+     */
+    gracePeriodPolicy?: GracePeriodPolicies | null;
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * Whether the user is allowed to authenticate. False = banned; set DateTimeOffset? Customer.BannedAt too.    Defaults to true.
+     */
+    isActive?: boolean | null;
+    /**
+     * Whether this customer is a company (B2B) rather than an individual. True only when billing says so;    a customer with no billing is treated as an individual. Computed, not persisted — the `isCompany` query    filter runs on this in memory, so a missing billing correctly counts as a person.
+     */
+    isCompany?: boolean | null;
+    /**
+     * The kyc property
+     */
+    kyc?: CustomerKyc | null;
+    /**
+     * When the user last signed in, if ever. Null until their first login.
+     */
+    lastLoginAt?: Date | null;
+    /**
+     * The user's preferred locale (e.g. "en", "fr") for localized emails and OTP messages. Null until set.
+     */
+    locale?: string | null;
+    /**
+     * The metadata property
+     */
+    metadata?: Customer_metadata | null;
+    /**
+     * Scheme that produced string? Customer.PasswordHash, defaulting to BCrypt. A Legacy hash is an import    from a previous system, verified as-is and upgraded to BCrypt on the next successful login. The scheme is    exposed to clients (the admin surface shows it) even though the hash itself never is.
+     */
+    passwordHashScheme?: PasswordHashSchemes | null;
+    /**
+     * The user's id with the payment processor (e.g. a Stripe customer id), if one has been created    for them. Generic across processors; null until set.
+     */
+    paymentCustomerId?: string | null;
+    /**
+     * The user's phone number, if provided. Null until set.
+     */
+    phoneNumber?: string | null;
+    /**
+     * The device token used to send this user push notifications, if one has been registered. Null    until set.
+     */
+    pushNotificationsToken?: string | null;
+}
+/**
+ * The user's external OAuth logins, keyed by provider (e.g. "apple", "google") with the provider's    user identifier as the value. Stored as JSON. Null when the user has no linked social logins.
+ */
+export interface Customer_externalLogins extends AdditionalDataHolder, Parsable {
+}
+export interface Customer_metadata extends AdditionalDataHolder, Parsable {
+}
+/**
+ * The result of a successful customer sign-in (password or OAuth): the inherited bearer token and expiry,    plus the identity the front-end needs.
+ */
+export interface CustomerAuthResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * JWT bearer token to send in the Authorization header.
+     */
+    accessToken?: string | null;
+    /**
+     * The customer's avatar URL (their Gravatar, falling back to a neutral silhouette).
+     */
+    avatar?: string | null;
+    /**
+     * The customer's email address.
+     */
+    email?: string | null;
+    /**
+     * Instant the access token stops being valid.
+     */
+    expiresAt?: Date | null;
+    /**
+     * Whether the customer's account is active. False when the account has been suspended.
+     */
+    isActive?: boolean | null;
+    /**
+     * The customer's preferred locale (e.g. `en-US`), when set.
+     */
+    locale?: string | null;
+    /**
+     * The customer's display name, when set.
+     */
+    name?: string | null;
+    /**
+     * The customer's unique identifier.
+     */
+    userId?: Guid | null;
+}
+/**
+ * Legal billing address and tax identifiers shown on a customer's invoices. Value object owned byCustomer with no identity of its own; all fields are optional.
+ */
+export interface CustomerBilling extends AdditionalDataHolder, Parsable {
+    /**
+     * Street address (line 1).
+     */
+    addressLine?: string | null;
+    /**
+     * City.
+     */
+    city?: string | null;
+    /**
+     * The company's legal name, when bool CustomerBilling.IsCompany is true.
+     */
+    companyName?: string | null;
+    /**
+     * Country (ISO 3166-1 alpha-2 code or name).
+     */
+    country?: string | null;
+    /**
+     * Whether the customer is billed as a company (B2B) rather than an individual (B2C). When true,    string? CustomerBilling.CompanyName and string? CustomerBilling.TaxId apply.
+     */
+    isCompany?: boolean | null;
+    /**
+     * Postal / ZIP code.
+     */
+    postalCode?: string | null;
+    /**
+     * Company registration number (e.g. SIREN/SIRET, Companies House number), distinct from the VAT/tax    number in string? CustomerBilling.TaxId. Applies when bool CustomerBilling.IsCompany is true.
+     */
+    registrationNumber?: string | null;
+    /**
+     * VAT / tax identification number.
+     */
+    taxId?: string | null;
+}
+/**
+ * Know-your-customer details a customer submits before their first order: intended proxy usage, acceptable-usepolicy acknowledgement, and the submitted/approved state. Stored as JSON on the Customer.
+ */
+export interface CustomerKyc extends AdditionalDataHolder, Parsable {
+    /**
+     * Whether the submitted KYC has been approved by HypeLabs.
+     */
+    approved?: boolean | null;
+    /**
+     * Free-text description of how the customer intends to use the proxies.
+     */
+    description?: string | null;
+    /**
+     * Whether the customer acknowledged the acceptable-use policy when submitting.
+     */
+    policyAcknowledged?: boolean | null;
+    /**
+     * Domain area the customer selected for their proxy usage (e.g. "ad-verification", "seo").
+     */
+    scopeOfUse?: string | null;
+    /**
+     * Whether the customer has submitted their KYC details.
+     */
+    submitted?: boolean | null;
+}
+/**
  * Catalog option for a single datacenter: a physical site proxies can be provisioned in.
  */
 export interface Datacenter extends AdditionalDataHolder, Parsable {
@@ -755,6 +1140,46 @@ export function deserializeIntoApiResponse(apiResponse: Partial<ApiResponse> | u
 }
 /**
  * The deserialization information for the current model
+ * @param AuthenticateCustomerOAuthRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAuthenticateCustomerOAuthRequest(authenticateCustomerOAuthRequest: Partial<AuthenticateCustomerOAuthRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "displayName": n => { authenticateCustomerOAuthRequest.displayName = n.getStringValue(); },
+        "email": n => { authenticateCustomerOAuthRequest.email = n.getStringValue(); },
+        "locale": n => { authenticateCustomerOAuthRequest.locale = n.getStringValue(); },
+        "provider": n => { authenticateCustomerOAuthRequest.provider = n.getStringValue(); },
+        "providerId": n => { authenticateCustomerOAuthRequest.providerId = n.getStringValue(); },
+        "pushNotificationsToken": n => { authenticateCustomerOAuthRequest.pushNotificationsToken = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param AuthenticateCustomerRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAuthenticateCustomerRequest(authenticateCustomerRequest: Partial<AuthenticateCustomerRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "email": n => { authenticateCustomerRequest.email = n.getStringValue(); },
+        "otp": n => { authenticateCustomerRequest.otp = n.getStringValue(); },
+        "password": n => { authenticateCustomerRequest.password = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param AuthenticateCustomerTelegramRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAuthenticateCustomerTelegramRequest(authenticateCustomerTelegramRequest: Partial<AuthenticateCustomerTelegramRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "telegramUserId": n => { authenticateCustomerTelegramRequest.telegramUserId = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param CancelOrderRequest The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -782,6 +1207,24 @@ export function deserializeIntoCapability(capability: Partial<Capability> | unde
         "price": n => { capability.price = n.getNumberValue(); },
         "retailPrice": n => { capability.retailPrice = n.getNumberValue(); },
         "type": n => { capability.type = n.getEnumValue<CapabilityTypes>(CapabilityTypesObject); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param CreateCustomerRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCreateCustomerRequest(createCustomerRequest: Partial<CreateCustomerRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "billing": n => { createCustomerRequest.billing = n.getObjectValue<CustomerBilling>(createCustomerBillingFromDiscriminatorValue); },
+        "displayName": n => { createCustomerRequest.displayName = n.getStringValue(); },
+        "email": n => { createCustomerRequest.email = n.getStringValue(); },
+        "externalId": n => { createCustomerRequest.externalId = n.getStringValue(); },
+        "locale": n => { createCustomerRequest.locale = n.getStringValue(); },
+        "password": n => { createCustomerRequest.password = n.getStringValue(); },
+        "phoneNumber": n => { createCustomerRequest.phoneNumber = n.getStringValue(); },
+        "verificationUrl": n => { createCustomerRequest.verificationUrl = n.getStringValue(); },
     }
 }
 /**
@@ -839,6 +1282,110 @@ export function deserializeIntoCreateReviewRequest(createReviewRequest: Partial<
         "customerId": n => { createReviewRequest.customerId = n.getGuidValue(); },
         "isFeatured": n => { createReviewRequest.isFeatured = n.getBooleanValue(); },
         "rating": n => { createReviewRequest.rating = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param Customer The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCustomer(customer: Partial<Customer> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "allowedDomains": n => { customer.allowedDomains = n.getCollectionOfPrimitiveValues<string>("string"); },
+        "allowedIps": n => { customer.allowedIps = n.getCollectionOfPrimitiveValues<string>("string"); },
+        "avatarUrl": n => { customer.avatarUrl = n.getStringValue(); },
+        "bannedAt": n => { customer.bannedAt = n.getDateValue(); },
+        "billing": n => { customer.billing = n.getObjectValue<CustomerBilling>(createCustomerBillingFromDiscriminatorValue); },
+        "countryCode": n => { customer.countryCode = n.getStringValue(); },
+        "displayName": n => { customer.displayName = n.getStringValue(); },
+        "email": n => { customer.email = n.getStringValue(); },
+        "emailVerified": n => { customer.emailVerified = n.getBooleanValue(); },
+        "externalId": n => { customer.externalId = n.getStringValue(); },
+        "externalLogins": n => { customer.externalLogins = n.getObjectValue<Customer_externalLogins>(createCustomer_externalLoginsFromDiscriminatorValue); },
+        "gracePeriodPolicy": n => { customer.gracePeriodPolicy = n.getEnumValue<GracePeriodPolicies>(GracePeriodPoliciesObject); },
+        "id": n => { customer.id = n.getGuidValue(); },
+        "isActive": n => { customer.isActive = n.getBooleanValue(); },
+        "isCompany": n => { customer.isCompany = n.getBooleanValue(); },
+        "kyc": n => { customer.kyc = n.getObjectValue<CustomerKyc>(createCustomerKycFromDiscriminatorValue); },
+        "lastLoginAt": n => { customer.lastLoginAt = n.getDateValue(); },
+        "locale": n => { customer.locale = n.getStringValue(); },
+        "metadata": n => { customer.metadata = n.getObjectValue<Customer_metadata>(createCustomer_metadataFromDiscriminatorValue); },
+        "passwordHashScheme": n => { customer.passwordHashScheme = n.getEnumValue<PasswordHashSchemes>(PasswordHashSchemesObject); },
+        "paymentCustomerId": n => { customer.paymentCustomerId = n.getStringValue(); },
+        "phoneNumber": n => { customer.phoneNumber = n.getStringValue(); },
+        "pushNotificationsToken": n => { customer.pushNotificationsToken = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param Customer_externalLogins The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCustomer_externalLogins(customer_externalLogins: Partial<Customer_externalLogins> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param Customer_metadata The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCustomer_metadata(customer_metadata: Partial<Customer_metadata> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param CustomerAuthResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCustomerAuthResponse(customerAuthResponse: Partial<CustomerAuthResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "accessToken": n => { customerAuthResponse.accessToken = n.getStringValue(); },
+        "avatar": n => { customerAuthResponse.avatar = n.getStringValue(); },
+        "email": n => { customerAuthResponse.email = n.getStringValue(); },
+        "expiresAt": n => { customerAuthResponse.expiresAt = n.getDateValue(); },
+        "isActive": n => { customerAuthResponse.isActive = n.getBooleanValue(); },
+        "locale": n => { customerAuthResponse.locale = n.getStringValue(); },
+        "name": n => { customerAuthResponse.name = n.getStringValue(); },
+        "userId": n => { customerAuthResponse.userId = n.getGuidValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param CustomerBilling The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCustomerBilling(customerBilling: Partial<CustomerBilling> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "addressLine": n => { customerBilling.addressLine = n.getStringValue(); },
+        "city": n => { customerBilling.city = n.getStringValue(); },
+        "companyName": n => { customerBilling.companyName = n.getStringValue(); },
+        "country": n => { customerBilling.country = n.getStringValue(); },
+        "isCompany": n => { customerBilling.isCompany = n.getBooleanValue(); },
+        "postalCode": n => { customerBilling.postalCode = n.getStringValue(); },
+        "registrationNumber": n => { customerBilling.registrationNumber = n.getStringValue(); },
+        "taxId": n => { customerBilling.taxId = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param CustomerKyc The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCustomerKyc(customerKyc: Partial<CustomerKyc> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "approved": n => { customerKyc.approved = n.getBooleanValue(); },
+        "description": n => { customerKyc.description = n.getStringValue(); },
+        "policyAcknowledged": n => { customerKyc.policyAcknowledged = n.getBooleanValue(); },
+        "scopeOfUse": n => { customerKyc.scopeOfUse = n.getStringValue(); },
+        "submitted": n => { customerKyc.submitted = n.getBooleanValue(); },
     }
 }
 /**
@@ -1439,6 +1986,7 @@ export interface ExtendOrderResponse extends AdditionalDataHolder, Parsable {
      */
     returnUrl?: string | null;
 }
+export type GracePeriodPolicies = (typeof GracePeriodPoliciesObject)[keyof typeof GracePeriodPoliciesObject];
 /**
  * A complaint reported about a proxy (or other resource), usually by a customer. string Incident.Target andstring Incident.ReporterEmail are free-form strings until they are linked to their own entities.
  */
@@ -1871,6 +2419,7 @@ export interface OrganizationStore extends AdditionalDataHolder, Parsable {
      */
     topBannerMessage?: string | null;
 }
+export type PasswordHashSchemes = (typeof PasswordHashSchemesObject)[keyof typeof PasswordHashSchemesObject];
 /**
  * Patch of an organization's annotation of a proxy: its free-form note and its tags. A null field is    left unchanged; an empty string clears the note and an empty array clears the tags.
  */
@@ -2344,6 +2893,49 @@ export function serializeApiResponse(writer: SerializationWriter, apiResponse: P
 }
 /**
  * Serializes information the current object
+ * @param AuthenticateCustomerOAuthRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAuthenticateCustomerOAuthRequest(writer: SerializationWriter, authenticateCustomerOAuthRequest: Partial<AuthenticateCustomerOAuthRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!authenticateCustomerOAuthRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("displayName", authenticateCustomerOAuthRequest.displayName);
+    writer.writeStringValue("email", authenticateCustomerOAuthRequest.email);
+    writer.writeStringValue("locale", authenticateCustomerOAuthRequest.locale);
+    writer.writeStringValue("provider", authenticateCustomerOAuthRequest.provider);
+    writer.writeStringValue("providerId", authenticateCustomerOAuthRequest.providerId);
+    writer.writeStringValue("pushNotificationsToken", authenticateCustomerOAuthRequest.pushNotificationsToken);
+    writer.writeAdditionalData(authenticateCustomerOAuthRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param AuthenticateCustomerRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAuthenticateCustomerRequest(writer: SerializationWriter, authenticateCustomerRequest: Partial<AuthenticateCustomerRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!authenticateCustomerRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("email", authenticateCustomerRequest.email);
+    writer.writeStringValue("otp", authenticateCustomerRequest.otp);
+    writer.writeStringValue("password", authenticateCustomerRequest.password);
+    writer.writeAdditionalData(authenticateCustomerRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param AuthenticateCustomerTelegramRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAuthenticateCustomerTelegramRequest(writer: SerializationWriter, authenticateCustomerTelegramRequest: Partial<AuthenticateCustomerTelegramRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!authenticateCustomerTelegramRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("telegramUserId", authenticateCustomerTelegramRequest.telegramUserId);
+    writer.writeAdditionalData(authenticateCustomerTelegramRequest.additionalData);
+}
+/**
+ * Serializes information the current object
  * @param CancelOrderRequest The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -2374,6 +2966,25 @@ export function serializeCapability(writer: SerializationWriter, capability: Par
     writer.writeNumberValue("retailPrice", capability.retailPrice);
     writer.writeEnumValue<CapabilityTypes>("type", capability.type);
     writer.writeAdditionalData(capability.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param CreateCustomerRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCreateCustomerRequest(writer: SerializationWriter, createCustomerRequest: Partial<CreateCustomerRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!createCustomerRequest || isSerializingDerivedType) { return; }
+    writer.writeObjectValue<CustomerBilling>("billing", createCustomerRequest.billing, serializeCustomerBilling);
+    writer.writeStringValue("displayName", createCustomerRequest.displayName);
+    writer.writeStringValue("email", createCustomerRequest.email);
+    writer.writeStringValue("externalId", createCustomerRequest.externalId);
+    writer.writeStringValue("locale", createCustomerRequest.locale);
+    writer.writeStringValue("password", createCustomerRequest.password);
+    writer.writeStringValue("phoneNumber", createCustomerRequest.phoneNumber);
+    writer.writeStringValue("verificationUrl", createCustomerRequest.verificationUrl);
+    writer.writeAdditionalData(createCustomerRequest.additionalData);
 }
 /**
  * Serializes information the current object
@@ -2435,6 +3046,116 @@ export function serializeCreateReviewRequest(writer: SerializationWriter, create
     writer.writeBooleanValue("isFeatured", createReviewRequest.isFeatured);
     writer.writeNumberValue("rating", createReviewRequest.rating);
     writer.writeAdditionalData(createReviewRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param Customer The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCustomer(writer: SerializationWriter, customer: Partial<Customer> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!customer || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfPrimitiveValues<string>("allowedDomains", customer.allowedDomains);
+    writer.writeCollectionOfPrimitiveValues<string>("allowedIps", customer.allowedIps);
+    writer.writeStringValue("avatarUrl", customer.avatarUrl);
+    writer.writeDateValue("bannedAt", customer.bannedAt);
+    writer.writeObjectValue<CustomerBilling>("billing", customer.billing, serializeCustomerBilling);
+    writer.writeStringValue("countryCode", customer.countryCode);
+    writer.writeStringValue("displayName", customer.displayName);
+    writer.writeStringValue("email", customer.email);
+    writer.writeBooleanValue("emailVerified", customer.emailVerified);
+    writer.writeStringValue("externalId", customer.externalId);
+    writer.writeObjectValue<Customer_externalLogins>("externalLogins", customer.externalLogins, serializeCustomer_externalLogins);
+    writer.writeEnumValue<GracePeriodPolicies>("gracePeriodPolicy", customer.gracePeriodPolicy);
+    writer.writeGuidValue("id", customer.id);
+    writer.writeBooleanValue("isActive", customer.isActive);
+    writer.writeBooleanValue("isCompany", customer.isCompany);
+    writer.writeObjectValue<CustomerKyc>("kyc", customer.kyc, serializeCustomerKyc);
+    writer.writeDateValue("lastLoginAt", customer.lastLoginAt);
+    writer.writeStringValue("locale", customer.locale);
+    writer.writeObjectValue<Customer_metadata>("metadata", customer.metadata, serializeCustomer_metadata);
+    writer.writeEnumValue<PasswordHashSchemes>("passwordHashScheme", customer.passwordHashScheme);
+    writer.writeStringValue("paymentCustomerId", customer.paymentCustomerId);
+    writer.writeStringValue("phoneNumber", customer.phoneNumber);
+    writer.writeStringValue("pushNotificationsToken", customer.pushNotificationsToken);
+    writer.writeAdditionalData(customer.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param Customer_externalLogins The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCustomer_externalLogins(writer: SerializationWriter, customer_externalLogins: Partial<Customer_externalLogins> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!customer_externalLogins || isSerializingDerivedType) { return; }
+    writer.writeAdditionalData(customer_externalLogins.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param Customer_metadata The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCustomer_metadata(writer: SerializationWriter, customer_metadata: Partial<Customer_metadata> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!customer_metadata || isSerializingDerivedType) { return; }
+    writer.writeAdditionalData(customer_metadata.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param CustomerAuthResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCustomerAuthResponse(writer: SerializationWriter, customerAuthResponse: Partial<CustomerAuthResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!customerAuthResponse || isSerializingDerivedType) { return; }
+    writer.writeStringValue("accessToken", customerAuthResponse.accessToken);
+    writer.writeStringValue("avatar", customerAuthResponse.avatar);
+    writer.writeStringValue("email", customerAuthResponse.email);
+    writer.writeDateValue("expiresAt", customerAuthResponse.expiresAt);
+    writer.writeBooleanValue("isActive", customerAuthResponse.isActive);
+    writer.writeStringValue("locale", customerAuthResponse.locale);
+    writer.writeStringValue("name", customerAuthResponse.name);
+    writer.writeGuidValue("userId", customerAuthResponse.userId);
+    writer.writeAdditionalData(customerAuthResponse.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param CustomerBilling The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCustomerBilling(writer: SerializationWriter, customerBilling: Partial<CustomerBilling> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!customerBilling || isSerializingDerivedType) { return; }
+    writer.writeStringValue("addressLine", customerBilling.addressLine);
+    writer.writeStringValue("city", customerBilling.city);
+    writer.writeStringValue("companyName", customerBilling.companyName);
+    writer.writeStringValue("country", customerBilling.country);
+    writer.writeBooleanValue("isCompany", customerBilling.isCompany);
+    writer.writeStringValue("postalCode", customerBilling.postalCode);
+    writer.writeStringValue("registrationNumber", customerBilling.registrationNumber);
+    writer.writeStringValue("taxId", customerBilling.taxId);
+    writer.writeAdditionalData(customerBilling.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param CustomerKyc The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCustomerKyc(writer: SerializationWriter, customerKyc: Partial<CustomerKyc> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!customerKyc || isSerializingDerivedType) { return; }
+    writer.writeBooleanValue("approved", customerKyc.approved);
+    writer.writeStringValue("description", customerKyc.description);
+    writer.writeBooleanValue("policyAcknowledged", customerKyc.policyAcknowledged);
+    writer.writeStringValue("scopeOfUse", customerKyc.scopeOfUse);
+    writer.writeBooleanValue("submitted", customerKyc.submitted);
+    writer.writeAdditionalData(customerKyc.additionalData);
 }
 /**
  * Serializes information the current object
@@ -3107,6 +3828,15 @@ export const CapabilityTypesObject = {
     Ipv6: "Ipv6",
 } as const;
 /**
+ * Overrides the organization's grace-period policy for this customer's orders. Null (the default)    inherits the org's `OrganizationTerms.GracePeriodPolicy`; set it to give one customer its own policy    (e.g. GracePeriodPolicies.KeepAlive) without changing the whole organization.
+ */
+export const GracePeriodPoliciesObject = {
+    DefaultEscaped: "Default",
+    None: "None",
+    KeepAlive: "KeepAlive",
+    OpenapiJsonNullSentinelValue2BF936000FE44250987AE5DDB203E464: "openapi-json-null-sentinel-value-2BF93600-0FE4-4250-987A-E5DDB203E464",
+} as const;
+/**
  * Lifecycle state of the incident (open, resolved, etc.).
  */
 export const IncidentStatusesObject = {
@@ -3132,6 +3862,13 @@ export const OrderStatusesObject = {
     GracePeriod: "GracePeriod",
     Expired: "Expired",
     Deleted: "Deleted",
+} as const;
+/**
+ * Scheme that produced string? Customer.PasswordHash, defaulting to BCrypt. A Legacy hash is an import    from a previous system, verified as-is and upgraded to BCrypt on the next successful login. The scheme is    exposed to clients (the admin surface shows it) even though the hash itself never is.
+ */
+export const PasswordHashSchemesObject = {
+    Bcrypt: "Bcrypt",
+    Legacy: "Legacy",
 } as const;
 /**
  * Payment method for the order.

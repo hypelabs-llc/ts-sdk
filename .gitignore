@@ -3,3 +3,4 @@ dist/
 regen.sh
 openapi.json
 src/generated/.kiota.log
+src/generated-customer/.kiota.log
