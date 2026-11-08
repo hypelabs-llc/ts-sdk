@@ -2,8 +2,8 @@ export { createConnectClient } from "./connectClient.js";
 export { ApiKeyAuthenticationProvider } from "./apiKeyAuthenticationProvider.js";
 
 // The customer surface: the same API seen by an end user, authenticated by a customer bearer token.
-export { createCustomerClient } from "./customerClient.js";
-export { BearerAuthenticationProvider } from "./bearerAuthenticationProvider.js";
+export { createCustomerClient, type CustomerClientOptions } from "./customerClient.js";
+export { CustomerAuthenticationProvider } from "./customerAuthenticationProvider.js";
 
 // Re-export the generated models (Customer, Order, Proxy, …) so consumers import them from the package root.
 export * from "./generated/models/index.js";
