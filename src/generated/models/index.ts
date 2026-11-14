@@ -2581,7 +2581,7 @@ export interface Order extends AdditionalDataHolder, Parsable {
      */
     paymentProcessor?: PaymentProcessors | null;
     /**
-     * Opaque handle at the processor (a Stripe `sub_...` or `pi_...`, a Heleket reference).
+     * Opaque handle at the processor (a Stripe `sub_...` or `pi_...`, a NOWPayments payment id).
      */
     processorReference?: string | null;
     /**
@@ -4558,9 +4558,6 @@ export const PasswordHashSchemesObject = {
     Bcrypt: "Bcrypt",
     Legacy: "Legacy",
 } as const;
-/**
- * Payment method for the order.
- */
 export const PaymentMethodsObject = {
     Balance: "Balance",
     CreditCard: "CreditCard",
@@ -4569,11 +4566,11 @@ export const PaymentMethodsObject = {
     OpenapiJsonNullSentinelValue2BF936000FE44250987AE5DDB203E464: "openapi-json-null-sentinel-value-2BF93600-0FE4-4250-987A-E5DDB203E464",
 } as const;
 /**
- * Processor that settles the order (Stripe, Heleket). Selects the webhook and reconciliation path that    keeps it alive. Null for a trial (nothing to settle).
+ * Processor that settles the order (Stripe, NOWPayments). Selects the webhook and reconciliation path that    keeps it alive. Null for a trial (nothing to settle).
  */
 export const PaymentProcessorsObject = {
     None: "None",
-    Heleket: "Heleket",
+    NowPayments: "NowPayments",
     Stripe: "Stripe",
     OpenapiJsonNullSentinelValue2BF936000FE44250987AE5DDB203E464: "openapi-json-null-sentinel-value-2BF93600-0FE4-4250-987A-E5DDB203E464",
 } as const;

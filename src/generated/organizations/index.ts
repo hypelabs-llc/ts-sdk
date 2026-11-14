@@ -4,6 +4,8 @@
 // @ts-ignore
 import { BrandingRequestBuilderRequestsMetadata, type BrandingRequestBuilder } from './branding/index.js';
 // @ts-ignore
+import { PaymentProcessorsRequestBuilderNavigationMetadata, type PaymentProcessorsRequestBuilder } from './paymentProcessors/index.js';
+// @ts-ignore
 import { StoreRequestBuilderRequestsMetadata, type StoreRequestBuilder } from './store/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata } from '@microsoft/kiota-abstractions';
@@ -16,6 +18,10 @@ export interface OrganizationsRequestBuilder extends BaseRequestBuilder<Organiza
      * The branding property
      */
     get branding(): BrandingRequestBuilder;
+    /**
+     * The paymentProcessors property
+     */
+    get paymentProcessors(): PaymentProcessorsRequestBuilder;
     /**
      * The store property
      */
@@ -31,6 +37,9 @@ export const OrganizationsRequestBuilderUriTemplate = "{+baseurl}/organizations"
 export const OrganizationsRequestBuilderNavigationMetadata: Record<Exclude<keyof OrganizationsRequestBuilder, KeysToExcludeForNavigationMetadata>, NavigationMetadata> = {
     branding: {
         requestsMetadata: BrandingRequestBuilderRequestsMetadata,
+    },
+    paymentProcessors: {
+        navigationMetadata: PaymentProcessorsRequestBuilderNavigationMetadata,
     },
     store: {
         requestsMetadata: StoreRequestBuilderRequestsMetadata,
