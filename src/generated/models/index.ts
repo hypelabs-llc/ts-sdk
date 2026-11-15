@@ -1803,6 +1803,7 @@ export function deserializeIntoOrganizationStore(organizationStore: Partial<Orga
         "customJs": n => { organizationStore.customJs = n.getStringValue(); },
         "documentationMd": n => { organizationStore.documentationMd = n.getStringValue(); },
         "domain": n => { organizationStore.domain = n.getStringValue(); },
+        "intercomAppId": n => { organizationStore.intercomAppId = n.getStringValue(); },
         "name": n => { organizationStore.name = n.getStringValue(); },
         "showDocumentationTab": n => { organizationStore.showDocumentationTab = n.getBooleanValue(); },
         "showReviewsTab": n => { organizationStore.showReviewsTab = n.getBooleanValue(); },
@@ -2710,6 +2711,10 @@ export interface OrganizationStore extends AdditionalDataHolder, Parsable {
      * Domain or subdomain the store is served on.
      */
     domain?: string | null;
+    /**
+     * Intercom app id for the store's live chat.
+     */
+    intercomAppId?: string | null;
     /**
      * Store name shown to customers.
      */
@@ -3885,6 +3890,7 @@ export function serializeOrganizationStore(writer: SerializationWriter, organiza
     writer.writeStringValue("customJs", organizationStore.customJs);
     writer.writeStringValue("documentationMd", organizationStore.documentationMd);
     writer.writeStringValue("domain", organizationStore.domain);
+    writer.writeStringValue("intercomAppId", organizationStore.intercomAppId);
     writer.writeStringValue("name", organizationStore.name);
     writer.writeBooleanValue("showDocumentationTab", organizationStore.showDocumentationTab);
     writer.writeBooleanValue("showReviewsTab", organizationStore.showReviewsTab);
